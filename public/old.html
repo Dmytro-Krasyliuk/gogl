@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Real-time Code Collaboration</title>
+
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #container {
+        height: 100%;
+        display: flex;
+      }
+      #editor-html,
+      #editor-css {
+        width: 50%;
+        height: 100%;
+      }
+      #preview-iframe {
+        width: 50%;
+        height: 100%;
+        border: none;
+      }
+      /* Other CSS styles remain the same */
+      /* ... */
+    </style>
+    <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+    <script>
+      const socket = io();
+      let currentCursorPosition = { row: 0, column: 0 };
+
+      function translateEditor() {
+        require.config({
+          paths: { vs: "https://unpkg.com/monaco-editor@latest/min/vs" },
+          "vs/nls": {
+            availableLanguages: {
+              "*": "ru",
+            },
+          },
+        });
+      }
+
+      function createEditor() {
+        require(["vs/editor/editor.main"], function () {
+          // HTML editor
+          var editorHTML = monaco.editor.create(
+            document.getElementById("editor-html"),
+            {
+              value: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Hello, world!</h1>
+</body>
+</html>`,
+              language: "html",
+              theme: "vs-dark",
+              automaticLayout: true,
+              tabSize: 2,
+              insertSpaces: true,
+              wordWrap: "on",
+              wrappingIndent: "indent",
+              readOnly: false,
+            }
+          );
+
+          // CSS editor
+          var editorCSS = monaco.editor.create(
+            document.getElementById("editor-css"),
+            {
+              value: `body {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+h1 {
+  color: #e91e63;
+}`,
+              language: "css",
+              theme: "vs-dark",
+              automaticLayout: true,
+              tabSize: 2,
+              insertSpaces: true,
+              wordWrap: "on",
+              wrappingIndent: "indent",
+              readOnly: false,
+            }
+          );
+
+          function updatePreview() {
+            const htmlValue = editorHTML.getValue();
+            const cssValue = editorCSS.getValue();
+
+            const combinedHTML = `${htmlValue}<style>${cssValue}</style>`;
+
+            const previewIframe = document.getElementById("preview-iframe");
+            const iframeDocument = previewIframe.contentDocument;
+            iframeDocument.open();
+            iframeDocument.write(combinedHTML);
+            iframeDocument.close();
+
+            socket.emit("codeChange", combinedHTML);
+          }
+
+          function onHtmlChange() {
+            updatePreview();
+            socket.emit("codeChange", editorHTML.getValue());
+          }
+
+          function onCssChange() {
+            updatePreview();
+            socket.emit("cssChange", editorCSS.getValue());
+          }
+
+          editorHTML.onDidChangeModelContent(onHtmlChange);
+          editorCSS.onDidChangeModelContent(onCssChange);
+
+          function handleHighlight(
+            startLineNumber,
+            startColumn,
+            endLineNumber,
+            endColumn
+          ) {
+            var range = new monaco.Range(
+              startLineNumber,
+              startColumn,
+              endLineNumber,
+              endColumn
+            );
+            editor.setSelection(range);
+            editor.revealPositionInCenterIfOutsideViewport({
+              lineNumber: startLineNumber,
+              column: startColumn,
+            });
+
+            var decoration = {
+              range: range,
+              options: {
+                inlineClassName: "highlighted-text",
+              },
+            };
+            highlightedDecorations = editor.deltaDecorations([], [decoration]);
+
+            var startOffset = editor.getOffsetForColumn(
+              startLineNumber,
+              startColumn
+            );
+            var tooltipX = startOffset.left + 8; // Position tooltip 8 pixels to the right of the highlighted text
+            var tooltipY = editor.getTopForLineNumber(startLineNumber) + 20; // Position tooltip 20 pixels below the highlighted text
+
+            tooltip = document.createElement("div");
+            tooltip.textContent = "здесь есть ошибка";
+            tooltip.className = "custom-tooltip";
+            tooltip.style.left = tooltipX + "px";
+            tooltip.style.top = tooltipY + "px";
+            document.body.appendChild(tooltip);
+
+            isHighlighted = true;
+          }
+
+          function removeHighlight() {
+            highlightedDecorations = editor.deltaDecorations(
+              highlightedDecorations,
+              []
+            );
+
+            if (tooltip && tooltip.parentNode) {
+              tooltip.parentNode.removeChild(tooltip);
+            }
+
+            isHighlighted = false;
+          }
+
+          function showSelectionInfo() {
+            var selection = editor.getSelection();
+            var startLineNumber = selection.startLineNumber;
+            var startColumn = selection.startColumn;
+            var endLineNumber = selection.endLineNumber;
+            var endColumn = selection.endColumn;
+
+            var cursorPosition = editor.getPosition();
+            var cursorLineNumber = cursorPosition.lineNumber;
+            var cursorColumn = cursorPosition.column;
+
+            var selectionInfoText = `Выделено: Строка ${startLineNumber}, Колонка ${startColumn} - Строка ${endLineNumber}, Колонка ${endColumn}`;
+            var cursorInfoText = `Курсор: Строка ${cursorLineNumber}, Колонка ${cursorColumn}`;
+
+            document.getElementById(
+              "selectionInfo"
+            ).innerText = `${selectionInfoText} | ${cursorInfoText}`;
+          }
+
+          function highlightLineTemporarily(lineNumber) {
+            var range = new monaco.Range(lineNumber, 1, lineNumber, 1);
+            var decoration = {
+              range: range,
+              options: {
+                isWholeLine: true,
+                inlineClassName: "highlighted-text",
+              },
+            };
+            highlightedDecorations = editor.deltaDecorations([], [decoration]);
+
+            setTimeout(function () {
+              removeHighlight();
+            }, 1000);
+          }
+
+          function setCursorPosition() {
+            const lineNumber = 117;
+            const column = 4;
+            const position = { lineNumber: lineNumber, column: column };
+            editor.setPosition(position);
+            editor.revealPositionInCenterIfOutsideViewport(position);
+            editor.focus();
+            highlightLineTemporarily(lineNumber);
+          }
+
+          function addButtonCode() {
+            var buttonCode = "<button></button>";
+            editor.trigger("keyboard", "type", { text: buttonCode });
+            editor.trigger("keyboard", "type", { text: "\n" });
+            editor.focus();
+          }
+
+          function insertRectangleWithCustomClass(className) {
+            var rectangleCode = `<div class="${className}"></div>`;
+            editor.trigger("keyboard", "type", { text: rectangleCode });
+            editor.focus();
+          }
+
+          // ...
+
+          function toggleLanguage() {
+            const currentModel = monaco.editor.getModels()[0];
+            const currentValue = currentModel.getValue();
+            const currentLanguage = currentModel.getModeId();
+
+            if (currentLanguage === "html") {
+              editor.setModel(monaco.editor.createModel(currentValue, "css"));
+            } else if (currentLanguage === "css") {
+              editor.setModel(monaco.editor.createModel(currentValue, "html"));
+            }
+          }
+
+          document
+            .getElementById("toggleLanguageButton")
+            .addEventListener("click", toggleLanguage);
+
+          showSelectionInfo();
+        });
+      }
+
+      // Function to toggle language between HTML and CSS remains the same
+      // ...
+
+      createEditor();
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="editor-html"></div>
+      <div id="editor-css"></div>
+      <iframe id="preview-iframe"></iframe>
+    </div>
+    <div class="buttons">
+      <!-- Buttons remain the same -->
+    </div>
+    <div id="selectionInfo"></div>
+  </body>
+</html>

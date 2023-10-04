@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Real-time Code Collaboration</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="main-container">
+      <div id="container">
+        <div id="editor"></div>
+        <iframe id="preview-iframe"></iframe>
+      </div>
+      <div class="wrapper-iframe"></div>
+      <div class="buttons">
+        <!-- Кнопка для переключения выделенного текста -->
+        <button id="toggleButton">Выделить текст</button>
+
+        <!-- Кнопка для установки курсора на 3-ю строку и 4-й символ -->
+        <button id="setCursorPositionButton">Установить курсор</button>
+
+        <!-- Кнопка для добавления кода кнопки в текущую позицию курсора -->
+        <button id="addButtonCodeButton">Добавить кнопку</button>
+        <button class="draw">Рисовать/Показать мышь</button>
+
+        <!-- Кнопка для блокировки/разблокировки редактора -->
+        <button id="blockEditorButton">Блокировать редактор</button>
+        <button id="removeAllHighlightsButton">Удалить все выделения</button>
+      </div>
+    </div>
+    <img class="mouse-teacher" src="img/mouse.png" />
+    <!-- Элемент для отображения информации о выделении и позиции курсора -->
+    <div id="selectionInfo"></div>
+
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+    <script>
+      const socket = io();
+      let currentCursorPosition = { row: 0, column: 0 };
+
+      // Функция для перевода текста на русский язык
+      function translateEditor() {
+        require.config({
+          paths: { vs: "https://unpkg.com/monaco-editor@latest/min/vs" },
+          "vs/nls": {
+            availableLanguages: {
+              "*": "ru", // Задаем язык по умолчанию для всех ключей
+            },
+          },
+        });
+      }
+
+      // Вызываем функцию для перевода текста на русский язык
+      translateEditor();
+    </script>
+    <script>
+      // Функция для создания редактора и других действий
+      function createEditor() {
+        require(["vs/editor/editor.main"], function () {
+          var editor = monaco.editor.create(document.getElementById("editor"), {
+            // Конфигурация редактора
+            value: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Hello, world!</h1>
+</body>
+</html>`,
+            language: "html",
+            theme: "vs-dark",
+            automaticLayout: true,
+            tabSize: 2,
+            insertSpaces: true,
+            wordWrap: "on",
+            wrappingIndent: "indent",
+            readOnly: false, // Разрешаем редактирование
+          });
+
+ 
+
+
+          var isHighlighted = false;
+          var highlightedDecorations = [];
+          var tooltip;
+
+          function updatePreview() {
+            const editorValue = monaco.editor.getModels()[0].getValue();
+            const previewIframe = document.getElementById("preview-iframe");
+            const iframeDocument = previewIframe.contentDocument;
+            iframeDocument.open();
+            iframeDocument.write(editorValue);
+            iframeDocument.write(`
+            
+            
+            <style>
+
+            </style>
+            
+            <script>
+
+              <\/script>
+            `);
+            iframeDocument.close();
+          }
+
+          updatePreview();
+
+          function toggleHighlight() {
+            if (isHighlighted) {
+              removeHighlight();
+            } else {
+              highlightText(3, 1, 6, 7);
+            }
+          }
+
+          function handleHighlight(
+            startLineNumber,
+            startColumn,
+            endLineNumber,
+            endColumn
+          ) {
+            var range = new monaco.Range(
+              startLineNumber,
+              startColumn,
+              endLineNumber,
+              endColumn
+            );
+            editor.setSelection(range);
+            editor.revealPositionInCenterIfOutsideViewport({
+              lineNumber: startLineNumber,
+              column: startColumn,
+            });
+
+            var decoration = {
+              range: range,
+              options: {
+                inlineClassName: "highlighted-text",
+              },
+            };
+            highlightedDecorations = editor.deltaDecorations([], [decoration]);
+
+            var startOffset = editor.getOffsetForColumn(
+              startLineNumber,
+              startColumn
+            );
+            var tooltipX = startOffset.left + 8; // Position tooltip 8 pixels to the right of the highlighted text
+            var tooltipY = editor.getTopForLineNumber(startLineNumber) + 20; // Position tooltip 20 pixels below the highlighted text
+
+            tooltip = document.createElement("div");
+            tooltip.textContent = "здесь есть ошибка";
+            tooltip.className = "custom-tooltip";
+            tooltip.style.left = tooltipX + "px";
+            tooltip.style.top = tooltipY + "px";
+            document.body.appendChild(tooltip);
+
+            isHighlighted = true;
+          }
+
+          
+
+          let drawButton = document.getElementsByClassName('draw')[0];
+          let wrapperIframe = document.getElementsByClassName('wrapper-iframe')[0];
+          drawButton.addEventListener('click', function () {
+wrapperIframe.classList.toggle('activeDraw')
+          })
+
+          function removeHighlight() {
+            highlightedDecorations = editor.deltaDecorations(
+              highlightedDecorations,
+              []
+            );
+
+            if (tooltip && tooltip.parentNode) {
+              tooltip.parentNode.removeChild(tooltip);
+            }
+
+            isHighlighted = false;
+          }
+
+          function showSelectionInfo() {
+            var selection = editor.getSelection();
+            var startLineNumber = selection.startLineNumber;
+            var startColumn = selection.startColumn;
+            var endLineNumber = selection.endLineNumber;
+            var endColumn = selection.endColumn;
+
+            var cursorPosition = editor.getPosition();
+            var cursorLineNumber = cursorPosition.lineNumber;
+            var cursorColumn = cursorPosition.column;
+
+            var selectionInfoText = `Выделено: Строка ${startLineNumber}, Колонка ${startColumn} - Строка ${endLineNumber}, Колонка ${endColumn}`;
+            var cursorInfoText = `Курсор: Строка ${cursorLineNumber}, Колонка ${cursorColumn}`;
+
+            document.getElementById(
+              "selectionInfo"
+            ).innerText = `${selectionInfoText} | ${cursorInfoText}`;
+          }
+
+          function highlightLineTemporarily(lineNumber) {
+            var range = new monaco.Range(lineNumber, 1, lineNumber, 1);
+            var decoration = {
+              range: range,
+              options: {
+                isWholeLine: true,
+                inlineClassName: "highlighted-text",
+              },
+            };
+            highlightedDecorations = editor.deltaDecorations([], [decoration]);
+
+            setTimeout(function () {
+              removeHighlight();
+            }, 1000);
+          }
+
+          function setCursorPosition() {
+            const lineNumber = 117;
+            const column = 4;
+            const position = { lineNumber: lineNumber, column: column };
+            editor.setPosition(position);
+            editor.revealPositionInCenterIfOutsideViewport(position);
+            editor.focus();
+            highlightLineTemporarily(lineNumber);
+          }
+          // Helper function for debouncing
+          function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+              const later = () => {
+                timeout = null;
+                func(...args);
+              };
+              clearTimeout(timeout);
+              timeout = setTimeout(later, wait);
+            };
+          }
+
+
+          // Debounced version of the onDidChangeCursorSelection function
+          const debouncedOnChangeCursorSelection = debounce(function (e) {
+            var selection = editor.getSelection();
+            if (!selection.isEmpty()) {
+              // Only execute the code when text is selected
+              showSelectionInfo();
+              var startLineNumber = selection.startLineNumber;
+              var startColumn = selection.startColumn;
+              var endLineNumber = selection.endLineNumber;
+              var endColumn = selection.endColumn;
+
+              console.log(
+                startLineNumber,
+                startColumn,
+                endLineNumber,
+                endColumn
+              );
+              handleHighlight(
+                startLineNumber,
+                startColumn,
+                endLineNumber,
+                endColumn
+              );
+              // You can also emit the highlight event to the server here if needed
+              socket.emit("highlightText", {
+                startLineNumber,
+                startColumn,
+                endLineNumber,
+                endColumn,
+              });
+            }
+          }, 70); // Adjust the wait time (in milliseconds) as needed (300ms in this example)
+
+          function addButtonCode() {
+            var buttonCode = "<button></button>";
+            editor.trigger("keyboard", "type", { text: buttonCode });
+            editor.trigger("keyboard", "type", { text: "\n" });
+            editor.focus();
+          }
+
+          function insertRectangleWithCustomClass(className) {
+            var rectangleCode = `<div class="${className}"></div>`;
+            editor.trigger("keyboard", "type", { text: rectangleCode });
+            editor.focus();
+          }
+
+          // Обновляем текст при получении изменений от сервера
+          socket.on("codeChange", (text) => {
+            editor.setValue(text);
+            updatePreview();
+          });
+
+          // Обновляем текст и выделение при получении изменений от других клиентов
+          socket.on("highlightText", (data) => {
+            handleHighlight(
+              data.startLineNumber,
+              data.startColumn,
+              data.endLineNumber,
+              data.endColumn
+            );
+            updatePreview();
+          });
+
+          socket.on("unblock-code", () => {
+            editor.updateOptions({ readOnly: false });
+            blockEditorButton.innerText = "Блокировать редактор";
+
+            updatePreview();
+          });
+
+          socket.on("block-code", () => {
+            editor.updateOptions({ readOnly: true });
+            blockEditorButton.innerText = "Разблокировать редактор";
+            updatePreview();
+          });
+
+          let isEditorLocked = false;
+
+          function blockEditorToggle() {
+            isEditorLocked = !isEditorLocked;
+            const blockEditorButton =
+              document.getElementById("blockEditorButton");
+            if (isEditorLocked) {
+              editor.updateOptions({ readOnly: true });
+              blockEditorButton.innerText = "Разблокировать редактор";
+              socket.emit("block-code");
+            } else {
+              editor.updateOptions({ readOnly: false });
+              blockEditorButton.innerText = "Блокировать редактор";
+              socket.emit("unblock-code");
+            }
+          }
+
+          // Add an event listener for the "Удалить все выделения" button
+          document
+            .getElementById("removeAllHighlightsButton")
+            .addEventListener("click", removeAllHighlights);
+
+          // Function to remove all highlights
+          function removeAllHighlights() {
+            // Remove all the highlighted decorations
+            removeHighlight();
+
+            // Remove the "highlighted-text" class from all elements after a small delay
+            setTimeout(() => {
+              const highlightedElements =
+                document.getElementsByClassName("highlighted-text");
+              while (highlightedElements.length > 0) {
+                highlightedElements[0].classList.remove("highlighted-text");
+                socket.emit("clear-hightlight");
+              }
+            }, 100); // Adjust the delay (in milliseconds) as needed
+
+            // Update the preview
+            updatePreview();
+          }
+
+          socket.on("clear-hightlight", function () {
+            // Remove all the highlighted decorations
+            removeHighlight();
+
+            // Remove the "highlighted-text" class from all elements after a small delay
+            setTimeout(() => {
+              const highlightedElements =
+                document.getElementsByClassName("highlighted-text");
+              while (highlightedElements.length > 0) {
+                highlightedElements[0].classList.remove("highlighted-text");
+              }
+            }, 100); // Adjust the delay (in milliseconds) as needed
+
+            // Update the preview
+            updatePreview();
+          });
+          // Функция для удаления подсвеченных текстов и подсказку
+          // function removeHighlight() {
+          //   highlightedDecorations = editor.deltaDecorations(
+          //     highlightedDecorations,
+          //     []
+          //   );
+
+          //   if (tooltip && tooltip.parentNode) {
+          //     tooltip.parentNode.removeChild(tooltip);
+          //   }
+
+          //   isHighlighted = false;
+          // }
+
+          document
+            .getElementById("blockEditorButton")
+            .addEventListener("click", blockEditorToggle);
+
+          document
+            .getElementById("toggleButton")
+            .addEventListener("click", toggleHighlight);
+          document
+            .getElementById("setCursorPositionButton")
+            .addEventListener("click", setCursorPosition);
+          document
+            .getElementById("addButtonCodeButton")
+            .addEventListener("click", addButtonCode);
+
+          editor.onKeyUp(function (e) {
+            updatePreview();
+            var editor = monaco.editor.getModels()[0];
+            var allCode = editor.getValue();
+            socket.emit("codeChange", allCode);
+          });
+
+          editor.onKeyUp(function (e) {
+            updatePreview();
+          });
+
+          editor.onDidChangeCursorSelection(debouncedOnChangeCursorSelection);
+
+          editor.onKeyDown(function (e) {
+            if (
+              e.keyCode === monaco.KeyCode.US_DOT &&
+              !editor.getSelection().isEmpty()
+            ) {
+              var selectedText = editor
+                .getModel()
+                .getValueInRange(editor.getSelection());
+              insertRectangleWithCustomClass(selectedText);
+            }
+          });
+
+          showSelectionInfo();
+        });
+      }
+
+      createEditor();
+
+      // Получаем ссылку на фотографию и контейнер
+      const photo = document.getElementsByClassName("mouse-teacher")[0];
+      socket.on("change-mouse", function (data) {
+        photo.style.left = `${data.photoX}px`;
+        photo.style.top = `${data.photoY}px`;
+        updatePreview();
+      });
+      // Следим за перемещением мыши внутри контейнера
+      document
+        .getElementById("main-container")
+        .addEventListener("mousemove", (event) => {
+          console.log(1);
+          // Получаем координаты курсора мыши относительно контейнера
+          const mouseX = event.clientX - document.body.offsetLeft;
+          const mouseY = event.clientY - document.body.offsetTop;
+
+          // Вычисляем новые координаты для фотографии (центрируем ее относительно курсора)
+          const photoX = mouseX - photo.clientWidth / 2;
+          const photoY = mouseY - photo.clientHeight / 2;
+
+          // Устанавливаем новые координаты для фотографии
+          photo.style.left = `${photoX}px`;
+          photo.style.top = `${photoY}px`;
+          socket.emit("change-mouse", { photoX, photoY });
+        });
+    </script>
+  </body>
+</html>

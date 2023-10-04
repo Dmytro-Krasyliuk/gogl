@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WoWRedactor | DimaNiceTeacher</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <div class="logo">
+        <a href="" class="logo__link">
+          <h2 class="logo__title">
+            WoW
+            <span class="logo__word">Redactor</span>
+          </h2>
+          <h3 class="logo__subtitle">DimaNiceTeacher</h3>
+        </a>
+      </div>
+      <div class="container">
+        <div class="main">
+          <div class="alert">
+            <img class="alert__icon" src="/img/icons/alert.svg" alt="" />
+            <div class="alert__title">Ваш редактор тимчасово заблоковано</div>
+          </div>
+          <div class="main-body">
+            <div class="files">
+              <div class="file active-file" data-target-editor="html">
+                <object
+                  data="/img/icons/html.svg"
+                  class="file__icon"
+                  type="image/svg+xml"
+                ></object>
+                <div class="file__title">index.html</div>
+              </div>
+              <div class="file" data-target-editor="css">
+                <img src="/img/icons/css.svg" class="file__icon" />
+                <div class="file__title">style.css</div>
+              </div>
+              <div class="file" data-target-editor="js">
+                <img src="/img/icons/js.svg" class="file__icon" />
+                <div class="file__title">script.js</div>
+              </div>
+            </div>
+            <div class="code active" id="editor-html" data-editor="html"></div>
+            <div class="code" id="editor-css" data-editor="css"></div>
+            <div class="code" id="editor-js" data-editor="js"></div>
+          </div>
+          <div class="race">
+            <% allStudentsData.forEach((student, index) => { %>
+            <div
+              class="car-item <%= student.myProfile %>" style="top: <%= index*70 %>px"
+              id="car-id-<%=student.studentId %>"
+              data-position="0"
+            >
+              <div class="car-place"><%= index+1 %></div>
+              <div class="car-body">
+                <h3 class="car-name"><%= student.studentName %></h3>
+                <img src="/img/cars/car-8.svg" alt="" class="car-photo" />
+                <div class="car-road"></div>
+                <img src="/img/finish.png" alt="" class="car-finish-img" />
+              </div>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+        <div class="tasks-wrapper">
+          <div class="tasks">
+            <h3 class="tasks__title">№: <%= idTask %>: <%- task.name %></h3>
+
+            <div class="task">
+              <div class="task-header">
+                <div class="task-header__status"></div>
+                <h2 class="task-header__title"><%- task.name %></h2>
+                <img src="" alt="" class="task-header__icon" />
+              </div>
+              <div class="task-body">
+                <h4 class="task-body__title">Додаткова інформація:</h4>
+                <div class="task-body__code"><%- task.label %></div>
+                <button class="task-body__show-answer">Пропустити завдання</button>
+                <div class="task-details-counter">1/15</div>
+              </div>
+            </div>
+          </div>
+          <div class="result">
+            <div class="result-header">
+              <h3 class="result__title">Твій результат:</h3>
+              <img src="/img/icons/open.svg" alt="" class="result__open" />
+            </div>
+            <iframe
+              frameborder="0"
+              class="result-body"
+              id="preview-iframe"
+            ></iframe>
+            <div class="result-footer">
+              <div class="result__previw-template">Показати шаблон</div>
+            </div>
+          </div>
+        </div>
+        <div class="aside">
+          <div class="btn-toggle-aside">
+            <img
+              class="btn-toggle-aside-photo"
+              src="/img/icons/right.svg"
+              alt=""
+            />
+          </div>
+          <div class="user">
+            <div class="user-photo">
+              <img
+                src="/img/user-image-default.png"
+                alt=""
+                class="user-photo__img"
+              />
+            </div>
+            <h2 class="user__name"><%= nameStudent %></h2>
+            <h2 class="user__status">Новачок</h2>
+            <div class="user-statistics">
+              <div class="user-statistics__balls">136 балів</div>
+              <div class="user-statistics__place">1 місце</div>
+            </div>
+          </div>
+          <div class="teacher">
+            <h4 class="teacher-comment__title">Коментар вчителя:</h4>
+            <div class="teacher-comment">
+              <div class="teacher-comment__text">
+                <div class="teacher-comment__text-item"></div>
+              </div>
+            </div>
+            <button class="help-action">
+              <img src="/img/icons/help.svg" alt="" class="help-action-img" />
+              <span>попросити допомогу</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <img class="mouse-teacher" src="/img/mouse.png" />
+
+    <!-- <div class="admin-actions">
+      <button id="toggleButton">Выделить текст</button>
+
+      <button id="setCursorPositionButton">Установить курсор</button>
+
+      <button id="addButtonCodeButton">Добавить кнопку</button>
+      <button class="draw">Рисовать/Показать мышь</button>
+
+      <button id="blockEditorButton">Блокировать редактор</button>
+      <button id="removeAllHighlightsButton">Удалить все выделения</button>
+    </div> -->
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/check.js"></script>
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+
+          
+
+      const taskBodyShowAnswer = document.getElementsByClassName('task-body__show-answer')[0];
+      const container = document.getElementsByClassName('race')[0];
+
+      
+
+
+
+      function animateCarsPosition() {
+  let cars = Array.from(document.querySelectorAll('.car-item'));
+
+  // сортировка автомобилей в обратном порядке по data-position
+  cars.sort((a, b) => b.getAttribute('data-position') - a.getAttribute('data-position'));
+
+  cars.forEach((car, index) => {
+    car.style.top = (index * 70) + 'px';
+  });
+}
+
+
+
+      const btnToggleAside = document.querySelector('.btn-toggle-aside');
+      const asideBlock = document.querySelector('.aside');
+      const asidePhoto = document.getElementsByClassName('btn-toggle-aside-photo')[0];
+
+      // Функция для изменения стилей и ссылки на фото при клике на кнопку
+      function toggleAside() {
+      // Переключаем видимость блока aside
+      asideBlock.classList.toggle('hidden');
+
+      // Проверяем, скрыт ли блок aside после переключения класса
+      const isAsideHidden = asideBlock.classList.contains('hidden');
+
+      // Меняем ссылку на фото в зависимости от текущего состояния блока aside
+      if (isAsideHidden) {
+      asidePhoto.src = '/img/icons/left.svg'; // Здесь укажите новую ссылку на фото, которое нужно показать
+      } else {
+      asidePhoto.src = '/img/icons/right.svg'; // Здесь укажите ссылку на начальное фото
+      }
+      }
+
+      // Добавляем обработчик события на клик кнопки
+      btnToggleAside.addEventListener('click', toggleAside);
+
+                          let indexTask = -1;
+
+                          function escapeDoubleQuotes(jsonData) {
+                          // Find the "html" attribute value in the JSON data using regular expressions
+                          const regex = /"html":\s*"(.*?)"/g;
+                          const matches = jsonData.match(regex);
+
+                          if (matches) {
+                            // Loop through each match and add escape characters before double quotes
+                            for (const match of matches) {
+                              const escapedMatch = match.replace(/"/g, '\\"');
+                              jsonData = jsonData.replace(match, escapedMatch);
+                            }
+                          }
+
+                          return jsonData;
+                        }
+
+                                function decodeHTMLString(htmlString) {
+                          const decodedString = htmlString.replace(/&lt;/g, '<')
+                                                          .replace(/&gt;/g, '>')
+                                                          .replace(/&#34;/g, '"')
+                                                          .replace(/&#39;/g, "'")
+                                                          .replace(/&amp;/g, '&')
+                                                          .trim();
+
+                          return decodedString.slice(1, decodedString.length-1);
+                        }
+                        class ObjectId {};
+
+                        let task = [<%- task %>];
+                        let allTasks = [<%- tasks %>];
+                        console.log(JSON.stringify(allTasks))
+
+                              let htmlPreviewCode = "<%= JSON.stringify(task.data.html) %>";
+                              let cssPreviewCode = "<%= JSON.stringify(task.data.css) %>";
+                              let jsPreviewCode = "<%= JSON.stringify(task.data.js) %>";
+                              let dataCode = {
+                                html: decodeHTMLString(htmlPreviewCode),
+                                css: decodeHTMLString(cssPreviewCode),
+                                js: decodeHTMLString(jsPreviewCode),
+                              }
+
+                              createEditor(dataCode);
+                              let idStudent = "<%= idStudent %>";
+                        let idTask = "<%= idTask %>";
+                        let imageResult = 'image'
+                        console.log(task)
+                        initProject(idStudent, idTask, imageResult, task);
+
+
+
+                        let currentTask;
+                        let amountTasks = allTasks.length;
+
+                        let tasks = document.getElementsByClassName('task')[0];
+                        let width1fr = (100/amountTasks).toFixed(2);
+
+                        function updateCarPosition(position, idStudent) {
+                          console.log(129)
+                          console.log(idStudent)
+                          document.querySelector(`#car-id-${idStudent} .car-photo`).style.marginLeft = (width1fr*position).toString()+'%';
+                          document.querySelector(`#car-id-${idStudent}`).dataset.position = position;
+                          console.log(130)
+
+
+
+                        }
+
+
+
+                        socket.on("car-position", (data) => {
+                          updateCarPosition(data.position, data.idStudent)
+                          animateCarsPosition()
+                        });
+
+
+
+
+
+                        function nextTask() {
+                          indexTask++;
+                          document.body.style.setProperty('--before-width', (width1fr*indexTask).toString()+'%');
+                          document.querySelector('.your-car .car-photo').style.marginLeft =(width1fr*indexTask).toString()+'%';
+                          document.querySelector('.your-car').dataset.position = indexTask;
+
+                          socket.emit("car-position", {
+                            position: indexTask,
+                            idStudent: idStudent,
+                          });
+                          animateCarsPosition()
+
+                          currentTask = allTasks[indexTask];
+                          tasks.innerHTML = `<div class="task-header">
+                          <div class="task-header__status"></div>
+                          <h2 class="task-header__title">${currentTask.title}</h2>
+                          <img src="" alt="" class="task-header__icon" />
+                        </div>
+                        <div class="task-body">
+                          <h4 class="task-body__title">Додаткова інформація:</h4>
+                          <div class="task-body__code">
+                            <p id="copyText">${currentTask.label}</p>
+                            <button id="copyButton"><img class="copy-image" src="/img/icons/copy.svg"></button>
+                            </div>
+                            <button class="task-body__show-answer">Показати рішення</button>
+                            <div class="task-details-counter">${indexTask+1}/${amountTasks}</div>
+                            </div>`
+                          console.log(122)
+
+                            let copyInterval;
+
+                          function copyText() {
+                            clearInterval(copyInterval)
+                            const copyText = document.getElementById('copyText');
+                            const textToCopy = copyText.innerText;
+
+                            // Create a temporary textarea element to copy the text to clipboard
+                            const tempTextArea = document.createElement('textarea');
+                            tempTextArea.value = textToCopy;
+                            document.body.appendChild(tempTextArea);
+
+                            // Select the text in the temporary textarea
+                            tempTextArea.select();
+                            tempTextArea.setSelectionRange(0, 99999); // For mobile devices
+
+                            // Copy the selected text to clipboard
+                            document.execCommand('copy');
+
+                            // Remove the temporary textarea
+                            document.body.removeChild(tempTextArea);
+
+                            document.getElementsByClassName('copy-image')[0].src="/img/icons/confirm.svg"
+                            document.getElementById('copyButton').style.backgroundColor="#4b9d4a"
+
+                            copyInterval = setInterval(()=>{
+                              document.getElementById('copyButton').style.backgroundColor="#737aa3"
+                              document.getElementsByClassName('copy-image')[0].src="/img/icons/copy.svg"
+                            }, 2000)
+
+
+                          }
+                          const taskBodyShowAnswer = document.getElementsByClassName('task-body__show-answer')[0];
+                          taskBodyShowAnswer.addEventListener('click', function () {
+                            nextTask()
+                          })
+                          
+
+                          const copyButton = document.getElementById('copyButton');
+                          copyButton.addEventListener('click', copyText);
+
+
+
+                                              }
+
+
+
+
+                                            nextTask()
+
+
+
+                                          var iframe = document.getElementById("preview-iframe");
+
+                                              var iframeDocument =
+                                                iframe.contentDocument || iframe.contentWindow.document;
+
+
+
+                                            setInterval(()=>{
+
+                                      let checkEl = allTasks[indexTask].check[0]
+                                      console.log('checkEl', checkEl)
+                                      console.log('checkEl.selector', checkEl.selector)
+
+                                      if (checkEl.type == "cssValue") {
+                                        try {
+                                          let el = iframeDocument.querySelector(checkEl.selector);
+                                          let cssCurrentValue = getComputedStyle(el)[checkEl.command];
+                                          if (checkEl.command == 'background' && checkEl.value.startsWith('rgb')) {
+                                            cssCurrentValue = getComputedStyle(el).backgroundColor;
+
+                                          }
+                                      // '0px none rgb(0, 0, 0)'
+                                        if ((checkEl.command == 'border' || checkEl.command == 'outline')  && checkEl.value == '0') {
+                                            cssCurrentValue = getComputedStyle(el)[checkEl.command];
+                                            if (cssCurrentValue == '0px none rgb(0, 0, 0)') {
+                                                nextTask();
+                                              }
+                                          }
+
+                                          if (cssCurrentValue == checkEl.value) {
+                                            nextTask();
+                                          }
+                                        } catch (e) {}
+                                      }
+
+                                      else if (checkEl.type == "jsVariableLength") {
+                                        try {
+                                          if (eval(checkEl.selector).length == checkEl.length) {
+                                            nextTask(index);
+                                          }
+                                        } catch (e) {}
+                                      }
+
+                                      else if (checkEl.type == "jsVariableType") {
+                                        if (checkEl.typeOF == "object") {
+                                          if (
+                                            Object.prototype.toString.call(eval(checkEl.selector)) ===
+                                            "[object Object]"
+                                          ) {
+                                            nextTask(index);
+                                          }
+                                        }
+
+                                      else if (checkEl.typeOF == "string") {
+                                          if (typeof eval(checkEl.selector) == "string") {
+                                            nextTask(index);
+                                          }
+                                        }
+
+                                        else if (checkEl.typeOF == "array") {
+                                          try {
+                                            let data = eval(checkEl.selector);
+                                            if (Array.isArray(data)) {
+                                              nextTask(index);
+                                            }
+                                          } catch (e) {}
+                                        }
+                                      }
+
+                                      else if (checkEl.type == "jsIsVariable") {
+                                        try {
+                                          if (hasVariable(checkEl.selector)) {
+                                            nextTask1(index);
+                                          }
+                                        } catch (e) {}
+                                        }
+
+                                      else if (checkEl.type == "attributeElement") {
+                                        try {
+                                          let element = iframeDocument.querySelector(checkEl.selector);
+                                          if (element.getAttribute(checkEl.attributeName) == checkEl.attributeValue) {
+                                            nextTask();
+                                          }
+                                        } catch (e) {}
+                                      }
+
+                                      else if (checkEl.type == "cssHoverValue") {
+                                        try {
+                                          let element = iframeDocument.querySelector(checkEl.selector);
+                                          let resultCSS = document.getElementById(
+                                            "INLINE_PEN_STYLESHEET_ID"
+                                          ).innerHTML;
+                                          let opacityValue = localStorage.getItem("opacity");
+                                          if (opacityValue != null) {
+                                            setOpacity(opacityValue);
+                                          }
+                                          var searchString = ":hover";
+                                          var replacementString = "::after";
+                                          var modifiedString = resultCSS.replace(
+                                            new RegExp(searchString, "g"),
+                                            replacementString
+                                          );
+                                          let styleTag = document.createElement("style");
+                                          styleTag.innerHTML = modifiedString;
+                                          document.body.appendChild(styleTag);
+                                          let result = getComputedStyle(element, ":after")[
+                                            checkEl.command
+                                          ];
+                                          if (result == checkEl.value) {
+                                            nextTask(index);
+                                          }
+                                        } catch (e) {}
+                                      }
+
+                                      else if (checkEl.type == "htmlElement") {
+                                        let el = iframeDocument.querySelector(checkEl.selector);
+                                        try {
+                                          if (el) {
+                                            console.log('super')
+                                            nextTask();
+                                          }
+                                        } catch (e) {}
+                                      }
+
+                                      else if (checkEl.type == "classElement") {
+                                          try {
+                                          let el = iframeDocument.querySelector(checkEl.selector);
+                                          if (el && el.classList.contains(checkEl.className)) {
+                                            nextTask();
+                                          }
+                                        } catch (e) {}
+                                        }
+
+                                       else if (checkEl.type == "textElement") {
+                                          try {
+                                          let el = iframeDocument.querySelector(checkEl.selector);
+                                          if (
+                                            el &&
+                                            el.textContent.trim().toLowerCase() ==
+                                              checkEl.text.trim().toLowerCase()
+                                          ) {
+                                            nextTask();
+                                          }
+                                        } catch (e) {}
+                                        }
+
+
+
+                                            }, 50)
+
+                                               })
+    </script>
+  </body>
+</html>

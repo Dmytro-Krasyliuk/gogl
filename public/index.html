@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WoWRedactor | DimaNiceTeacher</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <div class="logo">
+        <a href="" class="logo__link">
+          <h2 class="logo__title">
+            WoW
+            <span class="logo__word">Redactor</span>
+          </h2>
+          <h3 class="logo__subtitle">DimaNiceTeacher</h3>
+        </a>
+      </div>
+      <div class="container">
+        <div class="main">
+          <div class="alert">
+            <img class="alert__icon" src="/img/icons/alert.svg" alt="" />
+            <div class="alert__title">Ваш редактор тимчасово заблоковано</div>
+          </div>
+          <div class="main-body">
+            <div class="files">
+              <div class="file active-file" data-target-editor="html">
+                <object data="/img/icons/html.svg"  class="file__icon" type="image/svg+xml"></object>
+                <div class="file__title">index.html</div>
+              </div>
+              <div class="file" data-target-editor="css">
+                <img src="/img/icons/css.svg" class="file__icon" />
+                <div class="file__title">style.css</div>
+              </div>
+              <div class="file" data-target-editor="js">
+                <img src="/img/icons/js.svg" class="file__icon" />
+                <div class="file__title">script.js</div>
+              </div>
+            </div>
+            <div class="code active" id="editor-html" data-editor="html"></div>
+            <div class="code" id="editor-css" data-editor="css"></div>
+            <div class="code" id="editor-js" data-editor="js"></div>
+          </div>
+          <div class="race">
+            <div class="car-item">
+              <div class="car-place">1</div>
+              <div class="car-body">
+                <h3 class="car-name">Анна Трінчер</h3>
+                <img src="/img/car-1.png" alt="" class="car-photo" />
+                <div class="car-road"></div>
+                <img src="/img/finish.png" alt="" class="car-finish-img" />
+              </div>
+            </div>
+            <div class="car-item your-car">
+              <div class="car-place">2</div>
+              <div class="car-body">
+                <h3 class="car-name">Анна Трінчер</h3>
+                <img src="/img/car-1.png" alt="" class="car-photo" />
+                <div class="car-road"></div>
+                <img src="/img/finish.png" alt="" class="car-finish-img" />
+              </div>
+            </div>
+
+            <div class="car-item">
+              <div class="car-place">3</div>
+              <div class="car-body">
+                <h3 class="car-name">Анна Трінчер</h3>
+                <img src="/img/car-1.png" alt="" class="car-photo" />
+                <div class="car-road"></div>
+                <img src="/img/finish.png" alt="" class="car-finish-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tasks-wrapper">
+          <div class="tasks">
+            <h3 class="tasks__title">Завдання:</h3>
+            <div class="task">
+              <div class="task-header">
+                <div class="task-header__status"></div>
+                <h2 class="task-header__title">Створи кнопку в прямокутнику</h2>
+                <img src="" alt="" class="task-header__icon" />
+              </div>
+              <div class="task-body">
+                <h4 class="task-body__title">Приклад коду:</h4>
+                <div class="task-body__code">
+                  link rel="stylesheet" media="screen"
+                  href="https://cpwebassets.codepen.io/assets
+                </div>
+                <button class="task-body__show-answer">Показати рішення</button>
+                <div class="task-details-counter">1/15</div>
+              </div>
+            </div>
+          </div>
+          <div class="result">
+            <div class="result-header">
+              <h3 class="result__title">Твій результат:</h3>
+              <img src="/img/icons/open.svg" alt="" class="result__open" />
+            </div>
+            <iframe frameborder="0" class="result-body" id="preview-iframe"></iframe>
+            <div class="result-footer">
+              <div class="result__previw-template">Показати шаблон</div>
+            </div>
+          </div>
+        </div>
+        <div class="aside">
+          <div class="user">
+            <div class="user-photo">
+              <img
+                src="/img/user-image-default.png"
+                alt=""
+                class="user-photo__img"
+              />
+            </div>
+            <h2 class="user__name"><%= name %></h2>
+            <h2 class="user__status">Новачок</h2>
+            <div class="user-statistics">
+              <div class="user-statistics__balls">136 балів</div>
+              <div class="user-statistics__place">1 місце</div>
+            </div>
+          </div>
+          <div class="teacher">
+            <h4 class="teacher-comment__title">Коментар вчителя:</h4>
+            <div class="teacher-comment">
+              <div class="teacher-comment__text">
+                <div class="teacher-comment__text-item"></div>
+              </div>
+            </div>
+            <button class="help-action">
+              <img src="/img/icons/help.svg" alt="" class="help-action-img" />
+              <span>попросити допомогу</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <img class="mouse-teacher" src="/img/mouse.png" />
+
+
+    <div class="admin-actions">
+        <!-- Кнопка для переключения выделенного текста -->
+        <button id="toggleButton">Выделить текст</button>
+
+        <!-- Кнопка для установки курсора на 3-ю строку и 4-й символ -->
+        <button id="setCursorPositionButton">Установить курсор</button>
+
+        <!-- Кнопка для добавления кода кнопки в текущую позицию курсора -->
+        <button id="addButtonCodeButton">Добавить кнопку</button>
+        <button class="draw">Рисовать/Показать мышь</button>
+
+        <!-- Кнопка для блокировки/разблокировки редактора -->
+        <button id="blockEditorButton">Блокировать редактор</button>
+        <button id="removeAllHighlightsButton">Удалить все выделения</button>
+      </div>
+
+
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/check.js"></script>
+  </body>
+</html>
