@@ -976,6 +976,73 @@ await Practice.insertMany([
     },
   }),
   generatePracticeTask({
+    id: "set_s1_1",
+    name: "Базові елементи",
+    description: "прямокутники, тексти, зображення",
+    type: "classElement",
+    level: 1,
+    codeResult: {
+      html: `<div>
+      <img src="" alt="">
+      <h1>Hello</h1>
+      <h6>Hello</h6>
+      </div>
+      `,
+      css: ``,
+      js: `
+    `,
+    },
+    data: {
+      html: ``,
+      css: ``,
+      js: ``,
+    },
+  }),
+  generatePracticeTask({
+    id: "set_css2_1",
+    name: "Тренуємо CSS #1",
+    description: "колір найбільшого тексту",
+    type: "classElement",
+    level: 1,
+    codeResult: {
+      html: `<h1>Hello</h1>
+      `,
+      css: `h1 {
+        color: red;
+      }`,
+      js: `
+    `,
+    },
+    data: {
+      html: ``,
+      css: ``,
+      js: ``,
+    },
+  }),
+  generatePracticeTask({
+    id: "set_css3_1",
+    name: "Тренуємо CSS #2",
+    description: "Налаштування прямокутника",
+    type: "classElement",
+    level: 1,
+    codeResult: {
+      html: `<div></div>
+      `,
+      css: `div {
+        width: 200px;
+        height: 100px;
+        background: red;
+      }`,
+      js: `
+    `,
+    },
+    data: {
+      html: ``,
+      css: ``,
+      js: ``,
+    },
+  }),
+  generatePracticeTask({
     id: "css_display_flex_1",
     name: "4 Елемента в ряд",
     description: "display: flex & gap",
@@ -1371,7 +1438,7 @@ ${link.invite_link}
 
     if (text === "/admin") {
       if (chatId == myId) {
-        bot.sendMessage(chatId, "Оберіть потрібну дію", keyboards.adminMain);
+        bot.sendMessage(chatId, "Адмін-панель. \nОберіть потрібну дію", keyboards.adminMain);
       }
     }
 
@@ -1450,7 +1517,7 @@ ${link.invite_link}
         // keyboards.keyboards.themesKeyboard2(themes[0].data, formSoloImg.themes)
       );
     }
-    if (text == "Підтвердити фото") {
+    if (text == "Підтвердити фото" || text == "Без фото-звіту") {
       // let res = data.slice(8).split('_')
       // res.pop()
       // console.log(res)
@@ -1525,6 +1592,18 @@ bot.on("callback_query", async (msg) => {
          text: `✅ Обрані дні: ${data_.days.join(", ")}`,
        });
     }
+     if (data_.d === "studentDelete") {
+       const chatId = msg.message.chat.id;
+       const messageId = msg.message.message_id;
+       let users = await User.find({});
+       let name = getNamesOneStudentByIdGroup(data_.id)
+      bot.sendMessage(chatId, `Підтвердити видалення учня: <b>${name}</b>?`, {
+        parse_mode: "HTML",
+      });
+
+
+       
+     }
 
     console.log(jsonObject); // Выводит объект
     console.log(jsonObject.data); // Выводит "adminManageBalance"
@@ -1631,6 +1710,36 @@ bot.on("callback_query", async (msg) => {
     console.log(e);
   }
 
+if (data.startsWith("showDate")) {
+  let d = data.split("_"); // showDate_🔴_ВТ_19:15
+
+  let users = await User.find({});
+
+  let names = {
+    ПН: "Понеділок",
+    ВТ: "Вівторок",
+    СР: "Середа",
+    ЧТ: "Четвер",
+    ПТ: "П'ятниця",
+    СБ: "Субота",
+    НД: "Неділя",
+  };
+
+  for (let user of users) {
+    for (let dayObj of user.days) {
+      // Предполагая, что dayObj имеет поля day и time
+      if (names[d[2]] === dayObj.day && d[3] === dayObj.time) {
+        let studentName = getNamesOneStudentByIdGroup(user.idGroup);
+        bot.sendMessage(
+          chatId,
+          `<b>⚠️ Цей час занятий.</b>
+В ${names[d[2]]} о ${d[3]} займається учень: <b>${studentName}</b> `, {parse_mode: 'HTML'}
+        );
+      }
+    }
+  }
+}
+
 
   if (data == "user-changeSchedule") {
     let users = await User.find({})
@@ -1638,8 +1747,6 @@ bot.on("callback_query", async (msg) => {
     let bookedTimes = [];
     for (let i = 0; i < users.length; i++) {
       bookedTimes.push(users[i].days);
-      console.log(users[i].days);
-      console.log(users[i].name);
     }
     bot.sendMessage(
       chatId,
@@ -1654,8 +1761,14 @@ bot.on("callback_query", async (msg) => {
 ⚪️ - Вільно
 🔘 - Вільно лише 1 раз
 
-👨‍💻 - Твій час занять
+👨‍🎓 - Індивідуальне заняття
+👥 - Заняття в групі
+🏆 - Змагання з програмування
+📹 - Відео матеріали
+✅ - Тестові завдання
+👨‍💻 - Практичне завдання
 
+- Практичне завдання
 <b>Ось мій актуальний розклад 👇</b>
     
     `,
@@ -2256,6 +2369,7 @@ ${progressEngWord}
     typeThemes = "tests";
   }
   if (data == "sendPractice") {
+    currentThemes = themes[0];
     bot.sendMessage(
       chatId,
       "Оберіть по яким темам мають бути питання:",
@@ -2863,6 +2977,29 @@ ${curMoney} грн
       }
     );
   }
+   if (data == "pays") {
+     let students = await User.find({});
+     bot.sendMessage(
+       chatId,
+       `Інформація про оплати учнів:
+В цьому місяці прибуток:
+
+Вже прийшли кошти:
+Ще мають прийти:
+Оплати по датам:
+`,
+       {
+         parse_mode: "HTML",
+       }
+     );
+   }
+   if (data == "adminEnglishStat") {
+    console.log('012')
+    bot.sendMessage(
+      chatId,
+      "Статистика вивчення англійських слів",
+    );
+  }
   if (data == "registeredLesson") {
     bot.sendMessage(
       chatId,
@@ -3095,16 +3232,18 @@ ID заняття:
 
     let formatPhoto = [];
 
-    formSoloImg.photos.forEach((photo) => {
-      formatPhoto.push({
-        type: "photo",
-        media: photo,
-        caption: `☝️ Декілька фотографій, на яких зображені результати нашої роботи та код який ми вивчаємо👨‍🎓`,
-      });
-    });
+   
+ if (formSoloImg.photos.length >= 1) {
+   formSoloImg.photos.forEach((photo) => {
+     formatPhoto.push({
+       type: "photo",
+       media: photo,
+       caption: `☝️ Декілька фотографій, на яких зображені результати нашої роботи та код який ми вивчаємо👨‍🎓`,
+     });
+   });
 
-    await bot.sendMediaGroup(formSoloImg.idGroup, formatPhoto);
-
+   await bot.sendMediaGroup(formSoloImg.idGroup, formatPhoto);
+ }
 
     console.log("----");
     console.log(formSoloImg.themes);

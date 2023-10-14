@@ -627,7 +627,10 @@ ${namesError}
 
   photoKeyboard = {
     reply_markup: JSON.stringify({
-      keyboard: [[{ text: "Підтвердити фото" }]],
+      keyboard: [
+        [{ text: "Підтвердити фото" }],
+        [{ text: "Без фото-звіту" }],
+      ],
       resize_keyboard: true,
     }),
   };
@@ -1271,23 +1274,22 @@ ${namesError}
     // Сокращенные формы дней недели
     const allDaysShort = ["Час"];
     allDaysShort.push(...listDay);
-     const fullDayMap = {
-       Понеділок: "ПН",
-       Вівторок: "ВТ",
-       Середа: "СР",
-       Четвер: "ЧТ",
-       Пятниця: "ПТ",
-       Субота: "СБ",
-       Неділя: "НД",
-     };
+    const fullDayMap = {
+      Понеділок: "ПН",
+      Вівторок: "ВТ",
+      Середа: "СР",
+      Четвер: "ЧТ",
+      Пятниця: "ПТ",
+      Субота: "СБ",
+      Неділя: "НД",
+    };
 
-     // Фильтрация dayMap, чтобы оставить только те дни, которые приходят в listDay
-     const dayMap = Object.fromEntries(
-       Object.entries(fullDayMap).filter(([fullDay, shortDay]) =>
-         listDay.includes(shortDay)
-       )
-     );
-
+    // Фильтрация dayMap, чтобы оставить только те дни, которые приходят в listDay
+    const dayMap = Object.fromEntries(
+      Object.entries(fullDayMap).filter(([fullDay, shortDay]) =>
+        listDay.includes(shortDay)
+      )
+    );
 
     const allTimes = [
       "10:00",
@@ -1465,21 +1467,31 @@ ${namesError}
       try {
         let students = await User.find({});
         console.log(students);
+
+        let currentRow = []; // Временный массив для текущего ряда
+
         for (let i = 0; i < students.length; i++) {
           console.log("-- -- --");
           console.log(students[i]);
-          dataStudentsBtns.push([
-            {
-              text: students[i].name + " " + students[i].lastName,
-              callback_data:
-                prefix +
-                students[i].name +
-                " " +
-                students[i].lastName +
-                "-/-" +
-                students[i].idGroup,
-            },
-          ]);
+
+          let btn = {
+            text: students[i].name + " " + students[i].lastName,
+            callback_data:
+              prefix +
+              students[i].name +
+              " " +
+              students[i].lastName +
+              "-/-" +
+              students[i].idGroup,
+          };
+
+          currentRow.push(btn); // Добавляем кнопку в текущий ряд
+
+          // Если текущий ряд содержит 3 кнопки или мы на последнем студенте
+          if ((i + 1) % 3 == 0 || i == students.length - 1) {
+            dataStudentsBtns.push(currentRow);
+            currentRow = []; // Обнуляем текущий ряд для следующего набора кнопок
+          }
         }
       } catch (e) {
         console.log(e);
