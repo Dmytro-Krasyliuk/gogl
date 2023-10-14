@@ -433,7 +433,7 @@ ${namesError}
     btns.push([
       {
         text: "Виконати завдання",
-        url: `https://platform-sj3z.onrender.com/get/practice/${idTask}/${idStudent}`,
+        url: `https://gogl.onrender.com/get/practice/${idTask}/${idStudent}`,
         callback_data: `practice-${idTask}-${idStudent}`,
       },
     ]);
