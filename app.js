@@ -94,7 +94,8 @@ const templateGroupId = -1001908490825;
 const groupId = String(templateGroupId).slice(4);
 let cc = "";
 
-const token = process.env.TOKEN;
+// const token = process.env.TOKEN;
+const token = "6183220599:AAGzgg3MrVrxu2lu92WoBRRpLWanGa2UmWU";
 let botId = "6183220599";
 let rssDay = 0;
 let userDay = {
