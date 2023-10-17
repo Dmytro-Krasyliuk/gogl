@@ -103,12 +103,10 @@ let userDay = {
   time: "",
 };
 
-console.log(100)
 
 const app = express();
 const server = http.createServer(app);
 const io = new socketIO(server);
-console.log(200);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -123,7 +121,6 @@ app.use(express.json());
 
 async function addUserMoney(chatId, money) {
   let currentUser = await User.findOne({ idGroup: chatId });
-  console.log(currentUser);
   currentUser.diamonds += money;
   await currentUser.save();
   return currentUser.diamonds;
@@ -133,7 +130,6 @@ async function addUserMoney(chatId, money) {
 
 async function removeUserMoney(chatId, money) {
   let currentUser = await User.findOne({ idGroup: chatId });
-  console.log(currentUser);
   currentUser.diamonds -= money;
   await currentUser.save();
   return currentUser.diamonds;
@@ -592,13 +588,11 @@ ${wrongTask}
   let sendURL = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${myId}&text=${templateText}&parse_mode=Markdown`;
   fetch(sendURL);
 
-  console.log(templateText);
 
   res.send("ok");
 });
 app.get("/sandbox/select/:data", function (req, res) {
   let data = req.params.data;
-  console.log();
 });
 
 
@@ -607,7 +601,6 @@ app.get("/getTasks/:idStudent/:idTask", async (req, res) => {
   let idTask = req.params.idTask;
   let task = "not defined";
   task = await Practice.findOne({ id: idTask });
-  console.log("hello");
   return res.send({ data: task });
 });
 
@@ -615,7 +608,6 @@ app.get("/sandbox-elements/:idTask", async (req, res) => {
   let idTask = req.params.idTask;
   let task = "not defined";
   task = await Practice.findOne({ id: idTask });
-  console.log("hello");
   return res.send({ data: task });
 });
 
@@ -631,7 +623,6 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
   let idTask = req.params.idTask;
   let idStudent = req.params.idStudent;
   let nameStudent = getNamesOneStudentByIdGroup(idStudent);
-  console.log("!!!!!!!!", idTask);
   let task = await Practice.findOne({ id: idTask });
 
   let studentPractice = await studentListPractice.findOne({
@@ -640,7 +631,6 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
 
   if (studentPractice) {
     let allStudentsData = [];
-    console.log(studentPractice);
 
     if (studentPractice) {
       studentPractice.students.forEach((student) => {
@@ -658,8 +648,6 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
       });
     }
 
-    console.log("check");
-    console.log(task.tasks[0].check);
 
     let HTML = task.codeResult.html;
     let CSS = task.codeResult.css;
@@ -680,8 +668,7 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
         JS: JS,
       },
     };
-    console.log(data.code);
-    console.log("task", task);
+
     res.render("practice", data);
   }
   res.render("practice", {});
@@ -725,7 +712,6 @@ app.post("/set/practice", async (req, res) => {
 
   studentPractice.students.forEach(async (student, index) => {
     if (student.idStudent == result.idStudent) {
-      console.log("student.finish: ", student.finish);
 
       isFinish = student.finish;
       if (isFinish == false) {
@@ -747,10 +733,8 @@ app.post("/set/practice", async (req, res) => {
             { idPractice: result.idTask },
             { [studentPath]: true }
           );
-          console.log(aa);
         }
 
-        console.log(a);
       }
     }
   });
@@ -864,7 +848,6 @@ ${wrongTask}
     let sendURL = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${myId}&text=${templateText}&parse_mode=Markdown`;
     fetch(sendURL);
 
-    // console.log(templateText);
 
     res.send("ok");
   } else {
@@ -1373,15 +1356,12 @@ ${link.invite_link}
           // console.log("testId", testId.answers);
 
           if (testId.answers.right.includes(Number(studentId))) {
-            console.log("++");
             answerSum.right = answerSum.right + 1;
           }
           if (testId.answers.error.includes(Number(studentId))) {
-            console.log("--");
             answerSum.error = answerSum.error + 1;
           }
           if (testId.answers.notData.includes(Number(studentId))) {
-            console.log("00");
             answerSum.notData = answerSum.notData + 1;
           }
         });
@@ -1432,7 +1412,6 @@ ${link.invite_link}
 `;
       });
 
-      console.log("results", results);
 
       bot.sendMessage(chatId, text, { parse_mode: "HTML" });
     }
@@ -1446,7 +1425,6 @@ ${link.invite_link}
     if (text == "Підтвердити нову групу") {
       let newGroupNames = getNamesStudentByIdGroup(newGroupStudent);
 
-      console.log(newGroupNames);
       bot.sendMessage(
         chatId,
         "Група успішно створена. Усі учні в групі: " + newGroupNames,
@@ -1497,7 +1475,6 @@ ${link.invite_link}
     }
     if (text == 'money') {
       let money = await addUserMoney(chatId, 10);
-      console.log(money)
     }
     if (text == "Підтвердити дату") {
       bot.sendMessage(chatId, oldMessage);
@@ -1559,9 +1536,7 @@ ${link.invite_link}
 bot.on("callback_query", async (msg) => {
   const data = msg.data;
   const chatId = msg.message.chat.id;
-  console.log(data)
   try {
-    console.log(typeof data);
     const jsonObject = JSON.parse(data);
 
     const data_ = JSON.parse(data);
@@ -1574,8 +1549,6 @@ bot.on("callback_query", async (msg) => {
       let bookedTimes = [];
       for (let i = 0; i < users.length; i++) {
         bookedTimes.push(users[i].days);
-        console.log(users[i].days);
-        console.log(users[i].name);
       }
 
       // Вызов функции с новым списком дней и получение обновленной клавиатуры
@@ -1606,8 +1579,6 @@ bot.on("callback_query", async (msg) => {
        
      }
 
-    console.log(jsonObject); // Выводит объект
-    console.log(jsonObject.data); // Выводит "adminManageBalance"
 
 
 
@@ -1707,8 +1678,6 @@ bot.on("callback_query", async (msg) => {
 
   }
   catch(e) {
-    console.log("json error");
-    console.log(e);
   }
 
 if (data.startsWith("showDate")) {
@@ -2021,10 +1990,8 @@ ${progressEngWord}
               ),
             })
             .then(() => {
-              console.log("Message media edited");
             })
             .catch((error) => {
-              console.log("Error in editing message media:", error);
             });
         }
       }
@@ -2222,10 +2189,8 @@ ${progressEngWord}
                 ),
               })
               .then(() => {
-                console.log("Message media edited");
               })
               .catch((error) => {
-                console.log("Error in editing message media:", error);
               });
           }
         }
@@ -2241,6 +2206,18 @@ ${progressEngWord}
     }
   }
 
+  if (data == "learnTheme-video") {
+    bot.sendMessage(chatId, "Ось відео по даній темі:");
+  }
+  if (data == "learnTheme-tests") {
+    bot.sendMessage(chatId, "Ось тести по даній темі:");
+  }
+  if (data == "learnTheme-practice") {
+    bot.sendMessage(chatId, "Ось практичне завдання по даній темі:");
+  }
+  if (data == "learnTheme-similarTags") {
+    bot.sendMessage(chatId, "Ось схожі теми:");
+  }
   if (data == "regStudent") {
     newUserStatus = "name";
     bot.sendMessage(chatId, "Вкажіть ім'я учня");
@@ -2362,6 +2339,7 @@ ${progressEngWord}
   }
 
   if (data == "sendTests") {
+    currentThemes = themes[0];
     bot.sendMessage(
       chatId,
       "Оберіть по яким темам мають бути питання:",
@@ -2407,13 +2385,7 @@ ${progressEngWord}
         console.log("learn");
 
         console.log("currentThemesNew", currentTheme);
-        // links: [
-        // //             {
-        // //               title: "Просунуті фішки в Google",
-        // //               url: "http://prof.nau.edu.ua/help/19-sposobiv-shukati-informaciyu-v-google-pro-yaki-ne-znaye-96-koristuvachiv/",
-        // //               details: "",
-        // //             },
-        // //           ],
+
         function generateHTMLLinks() {
           let links = ``;
           currentTheme.links.forEach((link) => {
@@ -2536,9 +2508,7 @@ id: ${idTest}
         */
 
         for (let i = 0; i < idPracticeTask.length; i++) {
-          console.log(idPracticeTask[i], "idPracticeTask");
           let practiceTasks = await Practice.findOne({ id: idPracticeTask[i] });
-          console.log("practiceTasks", practiceTasks);
           try {
             let templateObjectData = {
               output: "./img/practice-old.png",
@@ -2712,7 +2682,6 @@ ${tasksItems}
           formSoloImg.themes.forEach((item) => {
             readyThemes.push(`\n▪️ ${item}`);
           });
-          console.log(msg.message.message_id);
           bot.deleteMessage(chatId, msg.message.message_id);
           bot.deleteMessage(chatId, msg.message.message_id - 1);
           bot.sendMessage(
@@ -3383,6 +3352,14 @@ ${theme.similarTags}
       console.log(e);
     }
   }
+   if (data.startsWith("help-video-")) {
+     let id = data.slice(11); // ec31bbe0
+     bot.sendMessage(
+       chatId,
+       "Ось відео по цій темі 👇 \n<i>Потрібно трішки зачекати, відео завантажується...<i>", 
+       {parse_mode: 'HTML'}
+     );
+   }
 
   if (data.startsWith("help-article-")) {
     let id = data.slice(13); // ec31bbe0

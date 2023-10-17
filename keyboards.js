@@ -12,10 +12,12 @@ let namesError = [];
 
 class Keyboards {
   theme = async (currentTheme) => {
-    let totalDurationInSeconds = 0;
-    let amountVideo = currentTheme.video.length;
     let amountTests = currentTheme.tests.length;
-
+    let amountPractice = currentTheme.tasks.practice.length;
+    let amountVideo = 0;
+    let totalDurationInSeconds = 0;
+    try {
+    amountVideo = currentTheme.video.length;
     async function getDurations(videoPaths) {
       const promises = videoPaths.map((videoPath) =>
         getVideoDuration(videoPath)
@@ -69,6 +71,9 @@ class Keyboards {
     } catch (error) {
       console.error(`Error: ${error}`);
     }
+  } catch (e) {
+
+  }
 
     let currentKeyboard = {
       reply_markup: JSON.stringify({
@@ -85,6 +90,12 @@ class Keyboards {
             {
               text: `❓ Тестові питання (${amountTests} шт)`,
               callback_data: "learnTheme-tests",
+            },
+          ],
+          [
+            {
+              text: `🧑‍💻 Практичні завдання (${amountPractice} шт)`,
+              callback_data: "learnTheme-practice",
             },
           ],
           [{ text: "🔗 Схожі теми", callback_data: "learnTheme-similarTags" }],
@@ -195,7 +206,7 @@ class Keyboards {
 ${testID.title}
 
 <b>Варіанти відповіді:</b>
-${testID.options.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+${testID.options}
 
 <b>Правильна відповідь:</b>
 ${testID.rightAnswer}
@@ -254,7 +265,7 @@ ${namesError}
 ${testID.title}
 
 <b>Варіанти відповіді:</b>
-${testID.options.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+${testID.options}
 
 <b>Правильна відповідь:</b>
 ${testID.rightAnswer}
@@ -312,6 +323,7 @@ ${namesError}
     console.log("444: ", keyboard.inline_keyboard);
     let newKb = [];
     let counterDeleteItems = 0;
+
     keyboard.inline_keyboard.forEach((item) => {
       if (item[0].callback_data.includes("error") && counterDeleteItems < 2) {
         counterDeleteItems++;
@@ -319,6 +331,8 @@ ${namesError}
         newKb.push(item);
       }
     });
+
+    newKb[newKb.length-1].splice(0, 1)
 
     return {
       inline_keyboard: newKb,
