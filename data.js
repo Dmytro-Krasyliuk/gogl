@@ -10581,14 +10581,15 @@ css
               options: ["ease", "linear", "cubic-bezier", "ease-in-out"],
             },
             {
-              title: "Анімація рухається з однаковою швидкістю від початку до кінця називається",
+              title:
+                "Анімація рухається з однаковою швидкістю від початку до кінця називається",
               options: ["linear", "ease", "cubic-bezier", "ease-in-out"],
             },
-             {
-              title: "Власний варіант плавності можна зробити за допомогою команди",
+            {
+              title:
+                "Власний варіант плавності можна зробити за допомогою команди",
               options: ["cubic-bezier", "linear", "ease", "ease-in-out"],
             },
-
           ],
           default: {
             figma: [
@@ -10678,17 +10679,18 @@ button {
           title: "aspect-ratio",
           speedCode: "ar",
           description: `
-<b>aspect-ratio</b> - команда яка дозволяє змінювати фон елемента. 
-Найчастіше використовується в кнопках та прямокутниках. 
-Є однією з найпопулярніших команд в CSS. 
+изначення: Aspect-ratio вказує пропорційний відношення між шириною та висотою елемента. Це відношення часто використовується в дизайні, особливо коли мова йде про зображення або відео. Наприклад, пропорційне співвідношення 16:9 означає, що на 16 частин ширини припадає 9 частин висоти.
 
-<b>Фон може бути:</b>
-▪️ Кольором
-▪️ Градієнтом
-▪️ Зображенням
+Як це працює в CSS: Нове властивість aspect-ratio дозволяє створювати блоки, що зберігають задане співвідношення сторін, незалежно від їхньої ширини чи висоти.
 
-За бажанням фон можна зробити напівпрозорим
-За бажанням можна зробити фон з декількох зображень або з декількох кольорів
+css
+.container {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+}
+У прикладі вище .container завжди буде мати пропорційне співвідношення 16:9, незалежно від його ширини.
+
+Застосування: Властивість aspect-ratio особливо корисна, коли ви хочете, щоб ваші зображення або відео відображалися правильно на різних пристроях і розмірах екрану, а також при створенні адаптивних макетів.
         `,
           tasks: {
             practice: [125],
@@ -10737,64 +10739,32 @@ button {
             ],
             sandbox: [
               {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/XWyjrjo",
-                title: "Звичайний фон кольором",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
-                title: "Фон лінійним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
-                title: "Фон зображенням",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
-                title: "Фон круговим градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
-                title: "Фон конусним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
-                title: "Фон колір + фото",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
-                title: "Фон декількома зображеннями",
+                url: "https://codepen.io/DmytroKrasyliuk/pen/RwEzOBe",
+                title: "Простий приклад aspect-ratio",
                 description: "",
               },
             ],
             code: [
               {
                 body: `
-button {
+div {
   background: red;
+  aspect-ratio: 16/9;
+  width: 400px;
 }
               `,
-                title: "Зробить фон кнопки червоним",
+                title: "Зробить відношення сторін 16 до 9",
                 description: "",
               },
             ],
           },
           amount: 0,
-          similarTags: [
-            "background-size",
-            "background-repeat",
-            "background-position",
-          ],
+          similarTags: ["box-sizing", "media queries", "object-fit"],
 
           links: [
             {
               title: "Гарна стаття на MDN",
-              url: "https://developer.mozilla.org/ru/docs/Web/CSS/background",
+              url: "https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio",
               details: "",
             },
           ],
@@ -10807,17 +10777,17 @@ button {
           title: "backdrop-filter",
           speedCode: "bkfr",
           description: `
-<b>backdrop-filter</b> - команда яка дозволяє змінювати фон елемента. 
-Найчастіше використовується в кнопках та прямокутниках. 
-Є однією з найпопулярніших команд в CSS. 
+Властивість backdrop-filter в CSS дозволяє застосовувати фільтри до області позаду елемента. 
+Це може бути корисно, коли потрібно змінити вигляд частини контенту, що знаходиться під елементом, 
+для підсилення візуального відокремлення між елементом та його фоном.
+.modal {
+    backdrop-filter: blur(10px);
+}
+У цьому прикладі область під модальним вікном буде розмита на 10 пікселів, що допоможе виділити модальне вікно від решти контенту.
+Особливості:
+Підтримка в браузерах: backdrop-filter ще не підтримується всіма браузерами, тому рекомендується використовувати властивість з обережністю та перевіряти сумісність.
 
-<b>Фон може бути:</b>
-▪️ Кольором
-▪️ Градієнтом
-▪️ Зображенням
-
-За бажанням фон можна зробити напівпрозорим
-За бажанням можна зробити фон з декількох зображень або з декількох кольорів
+Прозорість елемента: Для того, щоб ефект backdrop-filter був видимий, елемент, до якого застосовується ця властивість, повинен мати прозорість (через opacity, background-color з альфа-каналом або інші засоби).
         `,
           tasks: {
             practice: [125],
