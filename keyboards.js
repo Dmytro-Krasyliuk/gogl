@@ -447,7 +447,7 @@ ${namesError}
     btns.push([
       {
         text: "Виконати завдання",
-        url: `https://gogl.onrender.com/get/practice/${idTask}/${idStudent}`,
+        url: `https://gogl1.onrender.com/get/practice/${idTask}/${idStudent}`,
         callback_data: `practice-${idTask}-${idStudent}`,
       },
     ]);

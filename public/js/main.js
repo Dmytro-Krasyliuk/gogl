@@ -808,7 +808,7 @@ ${jsValue}
   function initProject(idStudent, idTask, imageResult) {
     console.log(181);
     let tasks;
-    fetch(`https://gogl.onrender.com/getTasks/${idStudent}/${idTask}`)
+    fetch(`https://gogl1.onrender.com/getTasks/${idStudent}/${idTask}`)
       .then((res) => res.json())
       .then((json) => {
         tasks = json.data.tasks;
@@ -1109,7 +1109,7 @@ ${jsValue}
                 },
               };
 
-              const url = "https://gogl.onrender.com/set/practice";
+              const url = "https://gogl1.onrender.com/set/practice";
 
               fetch(url, {
                 method: "POST",
