@@ -8198,6 +8198,136 @@ button {
       },
       {
         details: {
+          title: "::active",
+          speedCode: "::a",
+          description: `
+<b>::after</b>  в CSS це ніби магічний трюк, що дозволяє додати якусь річ після вмісту елемента на веб-сторінці, навіть якщо цієї речі там насправді немає.
+
+Скажімо, ти маєш якийсь текст, і ти хочеш, щоб після кожного абзацу в твоєму тексті була зірочка. Замість того, щоб йти та додавати цю зірочку після кожного абзацу в HTML коді, ти можеш використати "::after" в CSS, щоб автоматично додати зірочку після кожного абзацу.
+
+Ось приклад того, як це можна зробити:
+p::after {
+  content: "*";
+}
+В цьому прикладі, p - це селектор, що вказує на всі абзаци тексту на сторінці, а ::after каже, що ми хочемо додати щось після вмісту цих абзаців. 
+content вказує на те, що саме ми хочемо додати - в цьому випадку, зірочку.
+
+Пам'ятай, що ти маєш вказати щось в content, навіть якщо це пустий рядок (content: "";), бо інакше "::after" не працюватиме.
+        `,
+          tasks: {
+            practice: [125],
+            speed: [
+              {
+                url: "https://www.figma.com/file/xSZ0QJERoBWYg89hTdsFdS/%D0%A2%D1%80%D0%B5%D0%BD%D1%83%D1%94%D0%BC%D0%BE-%D1%84%D0%BE%D0%BD.-%D0%A0%D1%96%D0%B2%D0%B5%D0%BD%D1%8C-1?type=design&node-id=0-1&t=qKEBTJu2Ls3lOS7U-0",
+                title: "FIGMA: 7 прямокутників з різними фонами",
+                hardLevel: 2,
+              },
+              {
+                url: "https://www.figma.com/file/r7RZgKdPGaHihLkfDF4zrM/%D0%A2%D1%80%D0%B5%D0%BD%D1%83%D1%94%D0%BC%D0%BE-%D1%84%D0%BE%D0%BD.-%D0%A0%D1%96%D0%B2%D0%B5%D0%BD%D1%8C-3?type=design&node-id=0-1&t=qKEBTJu2Ls3lOS7U-0",
+                title: "FIGMA: 7 прямокутників: фон зображенням та градієнтами",
+                hardLevel: 4,
+              },
+            ],
+          },
+          tests: [
+            {
+              title: "Як правильно написати фон?",
+              options: ["background", "backround", "bakgroun", "bakground"],
+            },
+            {
+              title: "Як скорочено написати фон?",
+              options: ["bg", "bcg", "b", "br"],
+            },
+            {
+              title: "background це?",
+              options: ["колір фону", "колір тексту", "колір зображення"],
+            },
+          ],
+          default: {
+            figma: [
+              {
+                url: "",
+                title: "",
+                description: "",
+              },
+            ],
+            images: [
+              {
+                url: "./img/themes/css/background/img1.png",
+                title: "Приклади команди background",
+                description: "",
+                links: {},
+              },
+            ],
+            sandbox: [
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/XWyjrjo",
+                title: "Звичайний фон кольором",
+                description: "",
+              },
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
+                title: "Фон лінійним градієнтом",
+                description: "",
+              },
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
+                title: "Фон зображенням",
+                description: "",
+              },
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
+                title: "Фон круговим градієнтом",
+                description: "",
+              },
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
+                title: "Фон конусним градієнтом",
+                description: "",
+              },
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
+                title: "Фон колір + фото",
+                description: "",
+              },
+              {
+                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
+                title: "Фон декількома зображеннями",
+                description: "",
+              },
+            ],
+            code: [
+              {
+                body: `
+button {
+  background: red;
+}
+              `,
+                title: "Зробить фон кнопки червоним",
+                description: "",
+              },
+            ],
+          },
+          amount: 0,
+          similarTags: [
+            "background-size",
+            "background-repeat",
+            "background-position",
+          ],
+
+          links: [
+            {
+              title: "Гарна стаття на MDN",
+              url: "https://developer.mozilla.org/ru/docs/Web/CSS/background",
+              details: "",
+            },
+          ],
+        },
+
+        childrens: [],
+      },
+      {
+        details: {
           title: "::before",
           speedCode: "::bf",
           description: `
@@ -8397,36 +8527,6 @@ button {
                 title: "Звичайний фон кольором",
                 description: "",
               },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
-                title: "Фон лінійним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
-                title: "Фон зображенням",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
-                title: "Фон круговим градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
-                title: "Фон конусним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
-                title: "Фон колір + фото",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
-                title: "Фон декількома зображеннями",
-                description: "",
-              },
             ],
             code: [
               {
@@ -8527,36 +8627,6 @@ input:focus {
               {
                 url: "https://codepen.io/DmytroKrasyliuk/pen/XWyjrjo",
                 title: "Звичайний фон кольором",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
-                title: "Фон лінійним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
-                title: "Фон зображенням",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
-                title: "Фон круговим градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
-                title: "Фон конусним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
-                title: "Фон колір + фото",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
-                title: "Фон декількома зображеннями",
                 description: "",
               },
             ],
@@ -8764,16 +8834,13 @@ button {
           },
           tests: [
             {
-              title: "Як правильно написати фон?",
-              options: ["background", "backround", "bakgroun", "bakground"],
+              title:
+                "Якою командою можна підключити скачаний шрифт з комп'ютера?",
+              options: ["@font-face", "@font-family", "@fonts", "@media-fonts"],
             },
             {
-              title: "Як скорочено написати фон?",
-              options: ["bg", "bcg", "b", "br"],
-            },
-            {
-              title: "background це?",
-              options: ["колір фону", "колір тексту", "колір зображення"],
+              title: "Як скорочено написати @font-face?",
+              options: ["@ff", "@mf", "@fofa", "@font"],
             },
           ],
           default: {
@@ -8796,36 +8863,6 @@ button {
               {
                 url: "https://codepen.io/DmytroKrasyliuk/pen/XWyjrjo",
                 title: "Звичайний фон кольором",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
-                title: "Фон лінійним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
-                title: "Фон зображенням",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
-                title: "Фон круговим градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
-                title: "Фон конусним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
-                title: "Фон колір + фото",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
-                title: "Фон декількома зображеннями",
                 description: "",
               },
             ],
@@ -8864,7 +8901,9 @@ button {
           title: "@keyframes",
           speedCode: "@kf",
           description: `
-<b>@keyframes</b> - в CSS це як-би скріпт для мультика. Ти кажеш, що ти хочеш, щоб твій малюнок рухався або змінювався поступово протягом певного часу, і це робить твою веб-сторінку більш живою та цікавою.
+<b>@keyframes</b> - в CSS це як-би скріпт для мультика. 
+Ти кажеш, що ти хочеш, щоб твій малюнок рухався або змінювався поступово протягом певного часу, 
+і це робить твою веб-сторінку більш живою та цікавою.
 
 Наприклад, давай припустимо, що у тебе є кружечок на сторінці, і ти хочеш, щоб він змінював колір з червоного в блакитний, а потім знову в червоний. Ти можеш використати @keyframes для створення цього ефекту.
 
@@ -8891,7 +8930,10 @@ button {
 .circle - це селектор CSS, який вказує на елемент з класом "circle". animation: change-color 2s infinite; застосовує анімацію "change-color" до цього елемента. 2s означає, що анімація триває дві секунди, і infinite означає, що анімація повторюється нескінченно.
 
 Таким чином, з допомогою @keyframes ти можеш зробити свої веб-сторінки більш динамічними та цікавими!
-        `,
+        
+Запам'ятай! Не всі команди можуть анімуватись.
+Наприклад кут нахилу градієнту не можна анімувати та багато інших команд.
+`,
           tasks: {
             practice: [125],
             speed: [
@@ -8909,16 +8951,25 @@ button {
           },
           tests: [
             {
-              title: "Як правильно написати фон?",
-              options: ["background", "backround", "bakgroun", "bakground"],
+              title: "Як створити анімацію в CSS?",
+              options: ["@keyframes", "@frames", "@anime", "@gifter"],
             },
             {
-              title: "Як скорочено написати фон?",
-              options: ["bg", "bcg", "b", "br"],
+              title: "Як скорочено написати @keyframes?",
+              options: ["@kf", "@keyf", "@kfms", "@kfr"],
             },
             {
-              title: "background це?",
-              options: ["колір фону", "колір тексту", "колір зображення"],
+              title: "Чи всі команди можуть анімуватись?",
+              options: ["Ні", "Так"],
+            },
+            {
+              title: "Що означає infinite?",
+              options: [
+                "Постійно працювати",
+                "Пришвидшити анімацію",
+                "Попередній перегляд",
+                "Призупинити анімацію",
+              ],
             },
           ],
           default: {
@@ -8943,45 +8994,25 @@ button {
                 title: "Звичайний фон кольором",
                 description: "",
               },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
-                title: "Фон лінійним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
-                title: "Фон зображенням",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
-                title: "Фон круговим градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
-                title: "Фон конусним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
-                title: "Фон колір + фото",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
-                title: "Фон декількома зображеннями",
-                description: "",
-              },
             ],
             code: [
               {
                 body: `
-button {
-  background: red;
+@keyframes change-color {
+  0% {
+    background-color: red;
+  }
+
+  50% {
+    background-color: blue;
+  }
+
+  100% {
+    background-color: red;
+  }
 }
               `,
-                title: "Зробить фон кнопки червоним",
+                title: "Зробить анімацію кольорів",
                 description: "",
               },
             ],
@@ -9073,45 +9104,17 @@ button {
                 title: "Звичайний фон кольором",
                 description: "",
               },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPRQ",
-                title: "Фон лінійним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/JjeRPbQ",
-                title: "Фон зображенням",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/mdQrbRE",
-                title: "Фон круговим градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/eYQdOgP",
-                title: "Фон конусним градієнтом",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/BaGLBWR",
-                title: "Фон колір + фото",
-                description: "",
-              },
-              {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/xxQEKqo",
-                title: "Фон декількома зображеннями",
-                description: "",
-              },
             ],
             code: [
               {
                 body: `
-button {
-  background: red;
+@media (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
 }
               `,
-                title: "Зробить фон кнопки червоним",
+                title: "Якщо розмір екрану буде менший за 600 пікселів фон стане світло синім",
                 description: "",
               },
             ],
