@@ -593,11 +593,11 @@ let themes = [
           speedCode: "a",
           video: [],
           description: `
-Тег <b>a</b> в HTML використовується для створення гіперпосилань, які дозволяють користувачам переходити від однієї веб-сторінки до іншої, або до певної частини тієї ж сторінки.
+Тег a в HTML використовується для створення гіперпосилань, які дозволяють користувачам переходити від однієї веб-сторінки до іншої, або до певної частини тієї ж сторінки.
 
-Приклад використання тега <a>:
-
+Приклад використання тега a:
 <a href="https://example.com">Відвідати Example.com</a>
+
 У цьому прикладі href - це атрибут, який вказує на URL адресу, на яку повинне вести посилання. Текст між <a> та </a> (в цьому випадку "Відвідати Example.com") - це те, що буде видно користувачам на веб-сторінці.
 
 Якщо ти клікнеш на цей текст у веб-браузері, ти перейдеш на веб-сайт "example.com".
@@ -617,18 +617,25 @@ let themes = [
             practice: ["html_a_1", "html_a_2"],
             speed: [
               {
-                url: "https://www.figma.com/file/LnFMeZq25fQj00dDEmX7zG/address?type=design&node-id=0-1&mode=design&t=qzS4DyGBSNQtr3hn-0",
-                title: "FIGMA: Контакти магазину",
+                url: "https://www.figma.com/file/I6i7J0n1FBBK3j2O8QtgRN/Untitled?type=design&node-id=0-1&mode=design&t=RVv5ecZuFmtnBFpj-0",
+                title: "FIGMA: Просте посилання на Facebook",
                 hardLevel: 2,
               },
             ],
           },
           tests: [
             {
+              img: "",
               title: "Як зробити посилання на іншу сторінку?",
               options: ["a", "b", "c", "d"],
             },
             {
+              img: "./img/themes/html/tags/a/2.png",
+              title: "На якій строчці коду створюється посилання?",
+              options: ["2", "1", "3", "4"],
+            },
+            {
+              img: "",
               title: "Тег a створює на сайті ...",
               options: [
                 "посилання",
@@ -638,6 +645,7 @@ let themes = [
               ],
             },
             {
+              img: "",
               title:
                 "Щоб посилання відкрилось у новій вкладці необхідно написати атрибут",
               options: [
@@ -648,6 +656,7 @@ let themes = [
               ],
             },
             {
+              img: "",
               title: "Що означає атрибут href у тега a?",
               options: [
                 "Адреса посилання",
@@ -657,10 +666,12 @@ let themes = [
               ],
             },
             {
+              img: "",
               title: "Якщо ми не знаємо куди має вести посилання то пишемо...?",
               options: ['href="#"', 'href="*"', 'href="/"', 'href="..."'],
             },
             {
+              img: "",
               title: "Яке посилання не спрацює?",
               options: [
                 'href="google.com"',
@@ -670,6 +681,7 @@ let themes = [
               ],
             },
             {
+              img: "",
               title: "Як зробити посилання на номер телефону?",
               options: [
                 'href="tel:+380500751745"',
@@ -682,52 +694,47 @@ let themes = [
           default: {
             figma: [
               {
-                url: "",
-                title: "",
+                url: "https://www.figma.com/file/I6i7J0n1FBBK3j2O8QtgRN/Untitled?type=design&node-id=0-1&mode=design&t=RVv5ecZuFmtnBFpj-0",
+                title: "Приклад звичайного посилання",
                 description: "",
               },
             ],
             images: [
               {
-                url: "./img/themes/css/address/1.png",
-                title: "Приклади команди address",
+                url: "./img/themes/html/tags/a/1.png",
+                title: "Приклади команди a",
                 description: "",
-                links: {},
               },
             ],
             sandbox: [
               {
-                url: "https://codepen.io/DmytroKrasyliuk/pen/bGQqOdM",
-                title: "Простий приклад команди address",
+                url: "https://codepen.io/DmytroKrasyliuk/pen/VwgZmad",
+                title: "Просте посилання на Google",
                 description: "",
               },
             ],
             code: [
               {
                 body: `
-<address>
-  <a href="mailto:jim@rock.com">email@gmail.com</a><br>
-  <a href="tel:+380500451254">+380500451254</a>
-</address>
-
+<a href="https://google.com">Відвідати google</a>
               `,
-                title: "",
+                title: "Звичайне посилання на GOOGLE",
                 description: "",
               },
             ],
           },
           amount: 0,
-          similarTags: ["article", "time"],
+          similarTags: ["link", "script", "img"],
 
           links: [
             {
               title: "Гарна стаття на MDN",
-              url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/address",
+              url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a",
               details: "",
             },
             {
-              title: "Про семантичні елементи",
-              url: "https://w3schoolsua.github.io/html/html5_semantic_elements.html",
+              title: "Багато інформації про посилання",
+              url: "https://w3schoolsua.github.io/html/html_links.html",
               details: "",
             },
           ],
