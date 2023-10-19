@@ -983,6 +983,48 @@ await Practice.insertMany([
     },
   }),
   generatePracticeTask({
+    id: "set_base_mega",
+    name: "Базові елементи",
+    description: "прямокутники, тексти, зображення",
+    type: "classElement",
+    level: 1,
+    codeResult: {
+      html: `<div>
+      <img src="" alt="">
+      <h1>Hello</h1>
+      <div></div>
+      <h6>Hello 2</h6>
+      <h2>Disney</h2>
+      <div></div>
+      <img src="" alt="">
+      <h6>Hello 2</h6>
+      <div></div>
+      <h6>Hello 2</h6>
+      <img src="" alt="">
+      <div></div>
+      <img src="" alt="">
+      <div></div>
+      <h1>History</h1>
+      <h6>Hello 2</h6>
+      <img src="" alt="">
+      <div></div>
+      <i></i>
+      <b></b>
+      <u></u>
+      <u>end</u>
+      </div>
+      `,
+      css: ``,
+      js: `
+    `,
+    },
+    data: {
+      html: ``,
+      css: ``,
+      js: ``,
+    },
+  }),
+  generatePracticeTask({
     id: "set_css2_1",
     name: "Тренуємо CSS #1",
     description: "колір найбільшого тексту",

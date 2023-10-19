@@ -312,6 +312,53 @@ let themes = [
     data: [
       {
         details: {
+          title: "div, img, h1-h6, button, width",
+          speedCode: "",
+          video: [
+            {
+              title: "Основні правила",
+              url: "./video/themes/google-search/1.mp4",
+              description: `
+
+                  `,
+            },
+          ],
+          description: `
+    
+          `,
+          tasks: {
+            practice: ["set_s1_1"],
+            speed: [],
+          },
+          tests: [
+            {
+              photo: "",
+              title: "Як створити прямокутник?",
+              options: ["div", "img", "src", "button"],
+            },
+          ],
+          default: {
+            figma: [],
+            images: [],
+            sandbox: [],
+            code: [],
+          },
+          amount: 0,
+          similarTags: [],
+
+          links: [
+            {
+              title: "Просунуті фішки в Google",
+              url: "http://prof.nau.edu.ua/help/19-sposobiv-shukati-informaciyu-v-google-pro-yaki-ne-znaye-96-koristuvachiv/",
+              details: "",
+            },
+          ],
+        },
+
+        childrens: [],
+      },
+      {
+        details: {
           title: "div, img, h1-h6",
           speedCode: "",
           video: [
