@@ -2437,17 +2437,34 @@ ${progressEngWord}
         }
         let kb = await keyboards.theme(currentTheme);
 
-        bot.sendMessage(
-          chatId,
-          `
-  <b>${currentTheme.title}</b>
-  
-  ${currentTheme.description}
+               bot.sendMessage(
+                 chatId,
+                 `
+ *${currentTheme.title.trim()}*
 
-  <b>${generateHTMLLinks()}</b>
+ *Приклад коду:*
+ ${currentTheme.default.code[0].title}
+\`${currentTheme.default.code[0].body.trim()}\`
+  ~strike~
+
+  ${currentTheme.description}
+  
   `,
-          { parse_mode: "HTML", ...kb }
-        );
+                 { parse_mode: "Markdown", ...kb }
+               );
+
+
+  //       bot.sendMessage(
+  //         chatId,
+  //         `
+  // **${currentTheme.title.trim()}**
+  
+  // ${currentTheme.description}
+
+  // <b>${generateHTMLLinks()}</b>
+  // `,
+  //         { parse_mode: "Markdown", ...kb }
+  //       );
       }
 
       if (typeThemes == "tests") {
