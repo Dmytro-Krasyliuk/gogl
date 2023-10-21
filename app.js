@@ -983,6 +983,52 @@ await Practice.insertMany([
     },
   }),
   generatePracticeTask({
+    id: "set_s5_1",
+    name: "Базові елементи",
+    description: "прямокутники, тексти, зображення",
+    type: "classElement",
+    level: 1,
+    codeResult: {
+      html: `<div>
+      <img src="" alt="">
+      <h1>Hello</h1>
+      <h6>Hello</h6>
+      <button class="delete">delete item</button>
+      <h4>Hello</h4>
+      <h2>Hello</h2>
+      <h1 class="bigText">Hello</h1>
+      <h1 class="bigText">Hello</h1>
+      <h5 class="text5">Hello</h5>
+      <img class="image" src="https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg?w=2000" alt="">
+      <a href="https://youtube.com" class="youtube">link to YouTube</a>
+      <button class="delete">delete item</button>
+      <h2>Hello</h2>
+      <h1 class="bigText">Hello</h1>
+      <button class="delete">delete item</button>
+      </div>
+      `,
+      css: `
+      .image {
+        width: 100px;
+      }
+      .delete{
+        background: red;
+        width: 200px;
+      }
+      .bigText {
+        background: yellow;
+      }
+      `,
+      js: `
+    `,
+    },
+    data: {
+      html: ``,
+      css: ``,
+      js: ``,
+    },
+  }),
+  generatePracticeTask({
     id: "set_base_mega",
     name: "Базові елементи",
     description: "прямокутники, тексти, зображення",
@@ -2437,21 +2483,58 @@ ${progressEngWord}
         }
         let kb = await keyboards.theme(currentTheme);
 
-               bot.sendMessage(
-                 chatId,
-                 `
- *${currentTheme.title.trim()}*
-
- *Приклад коду:*
- ${currentTheme.default.code[0].title}
-\`${currentTheme.default.code[0].body.trim()}\`
-  ~strike~
-
-  ${currentTheme.description}
-  
+               await bot.sendPhoto(chatId, currentTheme.default.images[0].url, {
+                 caption: `
+*Вивчаємо тему: ${currentTheme.title.trim()}*
+*Скорочено: ${currentTheme.speedCode.trim()}*
+${currentTheme.description}
   `,
-                 { parse_mode: "Markdown", ...kb }
-               );
+                 parse_mode: "Markdown",
+               });
+
+let allCode = ''
+for (let item of currentTheme.default.code) {
+  allCode += `
+🧑‍💻 ${item.title}
+\`${item.body}\``;
+}
+
+let allSandbox = "";
+for (let item of currentTheme.default.sandbox) {
+  allSandbox += `
+🔸 [${item.title}](${item.url.trim()})`;
+}
+let allFigma = "";
+for (let item of currentTheme.default.figma) {
+  allFigma += `
+🔸 [${item.title}](${item.url.trim()})`;
+}
+let allLinks = "";
+for (let item of currentTheme.links) {
+  allLinks += `
+🔹 [${item.title}](${item.url.trim()})`;
+}
+
+
+
+            await bot.sendMessage(
+              chatId,
+              `
+*Приклади коду:*
+${allCode}
+ 
+*Приклади в пісочниці:*
+${allSandbox}
+
+*Приклади в Figma:*
+${allFigma}
+
+*Посилання по темі:*
+${allLinks}
+ 
+  `,
+              { parse_mode: "Markdown", disable_web_page_preview: true, ...kb }
+            );    
 
 
   //       bot.sendMessage(

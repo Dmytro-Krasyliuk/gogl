@@ -11,11 +11,14 @@ let namesRight = [];
 let namesError = [];
 
 class Keyboards {
+  
   theme = async (currentTheme) => {
     let amountTests = currentTheme.tests.length;
+    let amountSimilarTags = currentTheme.similarTags.length;
     let amountPractice = currentTheme.tasks.practice.length;
     let amountVideo = 0;
     let totalDurationInSeconds = 0;
+
     try {
     amountVideo = currentTheme.video.length;
     async function getDurations(videoPaths) {
@@ -98,7 +101,12 @@ class Keyboards {
               callback_data: "learnTheme-practice",
             },
           ],
-          [{ text: "🔗 Схожі теми", callback_data: "learnTheme-similarTags" }],
+          [
+            {
+              text: `🔗 Схожі теми (${amountSimilarTags} шт)`,
+              callback_data: "learnTheme-similarTags",
+            },
+          ],
         ],
       }),
     };
