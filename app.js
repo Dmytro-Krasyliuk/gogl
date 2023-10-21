@@ -992,7 +992,7 @@ await Practice.insertMany([
       html: `<div>
       <h1>Hello</h1>
       <h6>Hello</h6>
-      <img src="https://hips.hearstapps.com/hmg-prod/images/close-up-of-tulips-blooming-in-field-royalty-free-image-1584131603.jpg" alt="">
+      <img class="image" src="https://hips.hearstapps.com/hmg-prod/images/close-up-of-tulips-blooming-in-field-royalty-free-image-1584131603.jpg" alt="">
       <button class="delete">delete item</button>
       <h5 class="text5">Hello</h5>
       <a href="https://facebook.com" class="facebook">link to Facebook</a>
@@ -1025,6 +1025,10 @@ await Practice.insertMany([
       }
       .bigText {
         background: yellow;
+      }
+      .facebook {
+        width: 200px;
+        background: blue;
       }
       `,
       js: `
