@@ -994,16 +994,23 @@ await Practice.insertMany([
       <h6>Hello</h6>
       <img src="https://hips.hearstapps.com/hmg-prod/images/close-up-of-tulips-blooming-in-field-royalty-free-image-1584131603.jpg" alt="">
       <button class="delete">delete item</button>
+      <h5 class="text5">Hello</h5>
+      <a href="https://facebook.com" class="facebook">link to Facebook</a>
       <h4>Hello</h4>
+      <a href="https://youtube.com" class="youtube">link to YouTube</a>
       <h2>Hello</h2>
       <h1 class="bigText">Hello</h1>
       <h1 class="bigText">Hello</h1>
+      <a href="https://instagram.com" class="instagram">link to instagram</a>
       <div class="rect">i am rectangle</div>
+      <img class="image" src="https://www.adorama.com/alc/wp-content/uploads/2017/11/shutterstock_114802408.jpg" alt="">
       <h5 class="text5">Hello</h5>
       <img class="image" src="https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg?w=2000" alt="">
       <a href="https://youtube.com" class="youtube">link to YouTube</a>
       <button class="delete">delete item</button>
+      <div class="rect2">i am rectangle 2</div>
       <h2>Hello</h2>
+      <a href="https://apple.com" class="apple">link to Apple</a>
       <h1 class="bigText">Hello</h1>
       <button class="delete">delete item</button>
       </div>
