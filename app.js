@@ -990,14 +990,15 @@ await Practice.insertMany([
     level: 1,
     codeResult: {
       html: `<div>
-      <img src="" alt="">
       <h1>Hello</h1>
       <h6>Hello</h6>
+      <img src="https://hips.hearstapps.com/hmg-prod/images/close-up-of-tulips-blooming-in-field-royalty-free-image-1584131603.jpg" alt="">
       <button class="delete">delete item</button>
       <h4>Hello</h4>
       <h2>Hello</h2>
       <h1 class="bigText">Hello</h1>
       <h1 class="bigText">Hello</h1>
+      <div class="rect">i am rectangle</div>
       <h5 class="text5">Hello</h5>
       <img class="image" src="https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg?w=2000" alt="">
       <a href="https://youtube.com" class="youtube">link to YouTube</a>
