@@ -2277,7 +2277,7 @@ ${progressEngWord}
         "⏳ Зачекайте, відео по даній темі завантажується..."
       );
       await bot.sendVideo(chatId, dataTheme.video[0].url)
-      await bot.deleteMessage(chatId, oldMessage.message_id)
+      await bot.deleteMessage(chatId, oldMessage.message_id);
     }
     if (variant == "tests") {
       bot.sendMessage(chatId, "Ось тести по даній темі:");
@@ -2292,7 +2292,191 @@ for (let test of dataTheme.tests) {
 }
     }
     if (variant == "practice") {
-      bot.sendMessage(chatId, "Ось практичне завдання по даній темі:");
+      let oldMessage = await bot.sendMessage(
+        chatId,
+        "⏳ Зачекайте, практичне завдання по даній темі завантажується..."
+      );
+
+
+
+   console.log("currentThemesNew", dataTheme.tasks.practice);
+
+   idPracticeTask = dataTheme.tasks.practice;
+
+   for (let i = 0; i < idPracticeTask.length; i++) {
+     let practiceTasks = await Practice.findOne({ id: idPracticeTask[i] });
+     try {
+       let templateObjectData = {
+         output: "./img/practice-old.png",
+         html: `<html>
+  <body>
+   ${practiceTasks.data.html}
+   
+  <style>
+        ${practiceTasks.data.css}
+  </style>
+
+  </body>
+  </html>
+  
+  `,
+       };
+
+       await nodeHtmlToImage(templateObjectData);
+
+       let resultCSS = "";
+
+       console.log("practiceTasks.data.html", practiceTasks);
+
+       await nodeHtmlToImage({
+         output: "./img/practice-result.png",
+         html: `<html>
+  <body>
+   ${practiceTasks.data.html}
+   ${practiceTasks.codeResult.html}
+  <style>
+      
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          padding: 20px;
+          zoom: 150%;
+        }
+        ${practiceTasks.data.css}
+        ${practiceTasks.codeResult.css}
+
+  </style>
+  </body>
+  </html>
+  
+  `,
+       }).then(() => console.log("The image was created successfully!"));
+
+       await nodeHtmlToImage({
+         output: "./img/practice-result-tobase64.png",
+         html: `<html>
+  <body>
+  ${practiceTasks.data.html}
+   ${practiceTasks.codeResult.html}
+        <h1 class="template">ШАБЛОН</h1>
+  <style>
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: sans-serif;
+        }
+        body {
+          padding: 10px;
+          width: 800px;
+        }
+        .template {
+          font-size: 70px;
+          font-weight: 100;
+          position: absolute;
+          top: 180px;
+          left: 150px;
+          letter-spacing: 30px;
+          color: grey;
+          transform: rotate(-45deg);
+        }
+
+         ${practiceTasks.data.css}
+        ${practiceTasks.codeResult.css}
+  </style>
+  </body>
+  </html>
+  
+  `,
+       }).then(() => console.log("The image was created successfully!"));
+
+       practiceList.push({
+         idPractice: idPracticeTask[i],
+         photo:
+           "data:image/jpeg;base64," +
+           (await imageToBase64("./img/practice-result-tobase64.png")),
+         students: [],
+       });
+
+       let title = practiceTasks.name;
+       let themes = practiceTasks.themes;
+       let descriptionText = practiceTasks.description;
+       let tasks = practiceTasks.tasks.title;
+       let id = practiceTasks.id;
+       await drawPracticeTask(title, descriptionText, themes, tasks);
+       let tasksItems = "";
+       practiceTasks.tasks.forEach((task) => {
+         tasksItems += `▪️ ${task.title} ${task.label}
+`;
+       });
+
+       let templateCaption = `
+<b>${title}</b>
+Опис:
+<i>${descriptionText}</i>
+
+<b>Завдання:</b>
+${tasksItems}
+
+Статус: <b>В роботі</b>
+<pre>${id}</pre>
+
+    `.slice(0, 1023);
+       await drawPracticeTask(title, descriptionText, themes, tasks);
+
+
+         practiceList[i].students.push({
+           idStudent: Number(chatId),
+           result: {
+             successTask: [],
+             wrongTask: [],
+           },
+           historyCode: [
+             {
+               html: "",
+               css: "",
+               js: "",
+             },
+           ],
+           finish: false,
+           grade: 6,
+           time: 0,
+           finishCode: {
+             html: "",
+             css: "",
+             js: "",
+           },
+         });
+
+         bot.sendPhoto(chatId, "./img/practice-result-canvas.png", {
+           caption: templateCaption,
+           ...keyboards.practiceKeyboard(chatId, idPracticeTask[i]),
+           parse_mode: "HTML",
+         });
+     } catch (e) {}
+   }
+
+   await studentListPractice.insertMany(practiceList);
+   practiceList = [];
+
+
+
+
+
+
+
+       await bot.sendMessage(
+         chatId,
+         "⏳ Зачекайте, практичне завдання по даній темі завантажується..."
+       );
+
+      await bot.deleteMessage(chatId, oldMessage.message_id);
+
     }
       if (variant == "similarTags") {
         bot.sendMessage(chatId, "Ось схожі теми:");
