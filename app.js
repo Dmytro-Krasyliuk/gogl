@@ -20,7 +20,7 @@ import ffmpeg from "fluent-ffmpeg";
 import escapeHTML from "escape-html";
 import dotenv from "dotenv";
 import request from "request";
-import MP4Box from 'mp4box'
+import MP4Box from "mp4box";
 
 import { themes, students, templates, elementsData, apps } from "./data.js";
 import { result } from "./rss/quiz.js";
@@ -35,19 +35,34 @@ import generatePracticeTask from "./generatePracticeTask.js";
 import { Practice, User, studentListPractice } from "./database/index.js";
 import { Keyboards } from "./keyboards.js";
 import { englishWords } from "./english.js";
-import {drawEnglish} from './draw/english.js'
+import { drawEnglish } from "./draw/english.js";
+import { randomUUID } from "crypto";
 
+class ShortId {
+  constructor() {
+    this.all = {};
+  }
+  set(data) {
+    this.data = data;
+    this.randomId = uuid().toString().slice(0, 7);
+    this.all[this.randomId] = JSON.stringify(data);
+    return this.randomId;
+  }
+  get(id) {
+    this.id = id;
+
+    return this.all[this.id];
+  }
+}
+
+let shortId = new ShortId();
 
 dotenv.config();
-
 
 let asdfdf = [
   { day: "Понеділок", time: "21:30" },
   { day: "Середа", time: "22:15" },
 ];
-
-
-
 
 let typeThemes = "practice";
 let adminkaGroupId = -889347051;
@@ -103,7 +118,6 @@ let userDay = {
   time: "",
 };
 
-
 const app = express();
 const server = http.createServer(app);
 const io = new socketIO(server);
@@ -118,7 +132,6 @@ app.use(json());
 app.use(cors());
 app.use(express.json());
 
-
 async function addUserMoney(chatId, money) {
   let currentUser = await User.findOne({ idGroup: chatId });
   currentUser.diamonds += money;
@@ -126,15 +139,12 @@ async function addUserMoney(chatId, money) {
   return currentUser.diamonds;
 }
 
-
-
 async function removeUserMoney(chatId, money) {
   let currentUser = await User.findOne({ idGroup: chatId });
   currentUser.diamonds -= money;
   await currentUser.save();
   return currentUser.diamonds;
 }
-
 
 function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -153,12 +163,6 @@ function generateQuestion() {
     options,
   };
 }
-
-
-
-
-
-
 
 function getNamesOneStudentByIdGroup(id) {
   let names = "";
@@ -502,8 +506,6 @@ async function sendFirstInfo(chatId, name, schedule) {
   );
 }
 
-
-
 app.get("/tests", async (req, res) => {
   const token = "6183220599:AAGzgg3MrVrxu2lu92WoBRRpLWanGa2UmWU";
   const myId = 957139896;
@@ -588,13 +590,11 @@ ${wrongTask}
   let sendURL = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${myId}&text=${templateText}&parse_mode=Markdown`;
   fetch(sendURL);
 
-
   res.send("ok");
 });
 app.get("/sandbox/select/:data", function (req, res) {
   let data = req.params.data;
 });
-
 
 app.get("/getTasks/:idStudent/:idTask", async (req, res) => {
   let idStudent = req.params.idStudent;
@@ -611,13 +611,9 @@ app.get("/sandbox-elements/:idTask", async (req, res) => {
   return res.send({ data: task });
 });
 
-
-
 app.get("/", async (req, res) => {
   res.render("practice", {});
 });
-
-
 
 app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
   let idTask = req.params.idTask;
@@ -647,7 +643,6 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
         });
       });
     }
-
 
     let HTML = task.codeResult.html;
     let CSS = task.codeResult.css;
@@ -712,7 +707,6 @@ app.post("/set/practice", async (req, res) => {
 
   studentPractice.students.forEach(async (student, index) => {
     if (student.idStudent == result.idStudent) {
-
       isFinish = student.finish;
       if (isFinish == false) {
         const nestedArrayPath = `students.${index}.historyCode`;
@@ -734,7 +728,6 @@ app.post("/set/practice", async (req, res) => {
             { [studentPath]: true }
           );
         }
-
       }
     }
   });
@@ -848,14 +841,12 @@ ${wrongTask}
     let sendURL = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${myId}&text=${templateText}&parse_mode=Markdown`;
     fetch(sendURL);
 
-
     res.send("ok");
   } else {
     res.send("error");
   }
   // res.send(`Hello, POST request received! Data: ${JSON.stringify(data)}`);
 });
-
 
 // io.on("connection", (socket) => {
 //   console.log("New client connected");
@@ -921,9 +912,6 @@ await studentListPractice.deleteMany({});
 
 let idPracticeTask = [125, 126];
 
-
-
-
 // User.updateMany({}, { $set: { english: [] } })
 //   .then(result => {
 //     console.log('Field "english" added to all users:', result);
@@ -931,9 +919,6 @@ let idPracticeTask = [125, 126];
 //   .catch(err => {
 //     console.error('Error:', err);
 //   });
-
-
-
 
 await Practice.insertMany([
   generatePracticeTask({
@@ -1209,13 +1194,6 @@ await Practice.insertMany([
   }),
 ]);
 
-
-
-
-
-
-
-
 // // Обработка команды /start
 // bot.onText(/\/start/, (msg) => {
 //   const chatId = msg.chat.id;
@@ -1260,7 +1238,6 @@ bot.on("message", async (msg) => {
   const text = msg.text;
   const chatId = msg.chat.id;
   lastMsgId = msg.message_id;
-
 
   if (waitCardNumber) {
     let currentUser = await User.findOne({ idGroup: chatId });
@@ -1388,17 +1365,13 @@ ${link.invite_link}
 
     // commands
     if (text === "/themes") {
-      let titles = '';
-        for (let i = 0; i < themes.length; i++) {
-          titles += themes[i].title + '\n'
-        }
+      let titles = "";
+      for (let i = 0; i < themes.length; i++) {
+        titles += themes[i].title + "\n";
+      }
       bot.sendMessage(chatId, titles);
-      
     }
 
-
-
-   
     // commands
     if (text === "/start") {
       bot.sendMessage(
@@ -1512,13 +1485,16 @@ ${link.invite_link}
 `;
       });
 
-
       bot.sendMessage(chatId, text, { parse_mode: "HTML" });
     }
 
     if (text === "/admin") {
       if (chatId == myId) {
-        bot.sendMessage(chatId, "Адмін-панель. \nОберіть потрібну дію", keyboards.adminMain);
+        bot.sendMessage(
+          chatId,
+          "Адмін-панель. \nОберіть потрібну дію",
+          keyboards.adminMain
+        );
       }
     }
 
@@ -1573,7 +1549,7 @@ ${link.invite_link}
     if (text == "cc") {
       bot.sendMessage(chatId, "hello", keyboards.showQuiz());
     }
-    if (text == 'money') {
+    if (text == "money") {
       let money = await addUserMoney(chatId, 10);
     }
     if (text == "Підтвердити дату") {
@@ -1631,8 +1607,6 @@ ${link.invite_link}
   }
 });
 
-
-
 bot.on("callback_query", async (msg) => {
   const data = msg.data;
   const chatId = msg.message.chat.id;
@@ -1662,37 +1636,30 @@ bot.on("callback_query", async (msg) => {
         chat_id: chatId,
         message_id: messageId,
       });
-       bot.answerCallbackQuery(msg.id, {
-         text: `✅ Обрані дні: ${data_.days.join(", ")}`,
-       });
+      bot.answerCallbackQuery(msg.id, {
+        text: `✅ Обрані дні: ${data_.days.join(", ")}`,
+      });
     }
-     if (data_.d === "studentDelete") {
-       const chatId = msg.message.chat.id;
-       const messageId = msg.message.message_id;
-       let users = await User.find({});
-       let name = getNamesOneStudentByIdGroup(data_.id)
+    if (data_.d === "studentDelete") {
+      const chatId = msg.message.chat.id;
+      const messageId = msg.message.message_id;
+      let users = await User.find({});
+      let name = getNamesOneStudentByIdGroup(data_.id);
       bot.sendMessage(chatId, `Підтвердити видалення учня: <b>${name}</b>?`, {
         parse_mode: "HTML",
       });
+    }
 
-
-       
-     }
-
-
-
-
-
-  if (jsonObject.d == "studentInfo") {
-    let link = await bot.getChat(Number(jsonObject.id));
-    let userCurrent = await User.find({idGroup: jsonObject.id})
-    console.log(userCurrent);
-    bot.sendMessage(
-      chatId,
-      `Інформація про учня:
+    if (jsonObject.d == "studentInfo") {
+      let link = await bot.getChat(Number(jsonObject.id));
+      let userCurrent = await User.find({ idGroup: jsonObject.id });
+      console.log(userCurrent);
+      bot.sendMessage(
+        chatId,
+        `Інформація про учня:
 <b><a href="${link.invite_link}">${getNamesOneStudentByIdGroup(
-        jsonObject.id
-      )}</a></b>
+          jsonObject.id
+        )}</a></b>
 
 Вік: .
 Відвідуваність:
@@ -1713,10 +1680,9 @@ bot.on("callback_query", async (msg) => {
 Вже вивчив теми:
 
         `,
-      { parse_mode: "HTML" }
-    );
-  }
-
+        { parse_mode: "HTML" }
+      );
+    }
 
     if (jsonObject.data == "manageBalance") {
       bot.sendMessage(
@@ -1734,85 +1700,79 @@ bot.on("callback_query", async (msg) => {
       );
     }
 
-
-  if (jsonObject.d == "cb") {
-    console.log('cb++++')
-    if (jsonObject.t == "+") {
-      console.log(jsonObject.i);
-      addUserMoney(jsonObject.i, jsonObject.m);
-      bot.sendMessage(
-        chatId,
-        `
-Ви успішно додали <b>${
-          jsonObject.m
-        }</b>💎 для користувача <b>${getNamesOneStudentByIdGroup(
-          jsonObject.i
-        )}</b>
-      `,
-        {
-          parse_mode: "HTML",
-        }
-      );
-    }
-
-    if (jsonObject.t == "-") {
-      console.log(jsonObject.i);
-      removeUserMoney(jsonObject.i, jsonObject.m);
-      bot.sendMessage(
-        chatId,
-        `
-Ви успішно зменшили кількість алмазів на <b>${
-          jsonObject.m
-        }</b>💎 для користувача <b>${getNamesOneStudentByIdGroup(
-          jsonObject.i
-        )}</b>
-      `,
-        {
-          parse_mode: "HTML",
-        }
-      );
-    }
-
-  }
-
-
-  }
-  catch(e) {
-  }
-
-if (data.startsWith("showDate")) {
-  let d = data.split("_"); // showDate_🔴_ВТ_19:15
-
-  let users = await User.find({});
-
-  let names = {
-    ПН: "Понеділок",
-    ВТ: "Вівторок",
-    СР: "Середа",
-    ЧТ: "Четвер",
-    ПТ: "П'ятниця",
-    СБ: "Субота",
-    НД: "Неділя",
-  };
-
-  for (let user of users) {
-    for (let dayObj of user.days) {
-      // Предполагая, что dayObj имеет поля day и time
-      if (names[d[2]] === dayObj.day && d[3] === dayObj.time) {
-        let studentName = getNamesOneStudentByIdGroup(user.idGroup);
+    if (jsonObject.d == "cb") {
+      console.log("cb++++");
+      if (jsonObject.t == "+") {
+        console.log(jsonObject.i);
+        addUserMoney(jsonObject.i, jsonObject.m);
         bot.sendMessage(
           chatId,
-          `<b>⚠️ Цей час занятий.</b>
-В ${names[d[2]]} о ${d[3]} займається учень: <b>${studentName}</b> `, {parse_mode: 'HTML'}
+          `
+Ви успішно додали <b>${
+            jsonObject.m
+          }</b>💎 для користувача <b>${getNamesOneStudentByIdGroup(
+            jsonObject.i
+          )}</b>
+      `,
+          {
+            parse_mode: "HTML",
+          }
+        );
+      }
+
+      if (jsonObject.t == "-") {
+        console.log(jsonObject.i);
+        removeUserMoney(jsonObject.i, jsonObject.m);
+        bot.sendMessage(
+          chatId,
+          `
+Ви успішно зменшили кількість алмазів на <b>${
+            jsonObject.m
+          }</b>💎 для користувача <b>${getNamesOneStudentByIdGroup(
+            jsonObject.i
+          )}</b>
+      `,
+          {
+            parse_mode: "HTML",
+          }
         );
       }
     }
-  }
-}
+  } catch (e) {}
 
+  if (data.startsWith("showDate")) {
+    let d = data.split("_"); // showDate_🔴_ВТ_19:15
+
+    let users = await User.find({});
+
+    let names = {
+      ПН: "Понеділок",
+      ВТ: "Вівторок",
+      СР: "Середа",
+      ЧТ: "Четвер",
+      ПТ: "П'ятниця",
+      СБ: "Субота",
+      НД: "Неділя",
+    };
+
+    for (let user of users) {
+      for (let dayObj of user.days) {
+        // Предполагая, что dayObj имеет поля day и time
+        if (names[d[2]] === dayObj.day && d[3] === dayObj.time) {
+          let studentName = getNamesOneStudentByIdGroup(user.idGroup);
+          bot.sendMessage(
+            chatId,
+            `<b>⚠️ Цей час занятий.</b>
+В ${names[d[2]]} о ${d[3]} займається учень: <b>${studentName}</b> `,
+            { parse_mode: "HTML" }
+          );
+        }
+      }
+    }
+  }
 
   if (data == "user-changeSchedule") {
-    let users = await User.find({})
+    let users = await User.find({});
     // console.log(users)
     let bookedTimes = [];
     for (let i = 0; i < users.length; i++) {
@@ -1862,21 +1822,21 @@ if (data.startsWith("showDate")) {
     );
     await currentUser.save();
     let countEngWord = 0;
-    
-    console.log(currentUser.english);
-      for (let i = 0; i < currentUser.english.length; i++) {
-        if (word == currentUser.english[i]) {
-          countEngWord++
-        }
-      }
-      let uaWord;
 
-      for (let i = 0; i < englishWords.length; i++) {
-        if (englishWords[i].english == word) {
-          uaWord = englishWords[i].ukranian;
-        }
+    console.log(currentUser.english);
+    for (let i = 0; i < currentUser.english.length; i++) {
+      if (word == currentUser.english[i]) {
+        countEngWord++;
       }
-      bot.deleteMessage(chatId, msg.message.message_id);
+    }
+    let uaWord;
+
+    for (let i = 0; i < englishWords.length; i++) {
+      if (englishWords[i].english == word) {
+        uaWord = englishWords[i].ukranian;
+      }
+    }
+    bot.deleteMessage(chatId, msg.message.message_id);
     if (countEngWord == 4) {
       await drawEnglish(
         word,
@@ -1892,30 +1852,34 @@ if (data.startsWith("showDate")) {
 Такими темпами ти скоро станеш крутим IT cпеціалістом!
       
       `;
-      bot.sendPhoto(chatId, "./img/english-new-word-result.png", {parse_mode: 'HTML', caption: cap, ...keyboards.englishNextWord()});
+      bot.sendPhoto(chatId, "./img/english-new-word-result.png", {
+        parse_mode: "HTML",
+        caption: cap,
+        ...keyboards.englishNextWord(),
+      });
+    } else {
+      const questionData = generateQuestion();
+
+      const options = questionData.options.map((word) => word.ukranian);
+      const correctAnswer = questionData.correctWord.ukranian;
+      let engWord = questionData.correctWord.english;
+
+      const inlineKeyboard = options.map((option, index) => [
+        {
+          text: option,
+          callback_data:
+            option === correctAnswer
+              ? "correct-" + engWord
+              : "wrong-" + engWord,
+        },
+      ]);
+
+      bot.sendMessage(chatId, `Як перекладається слово ${engWord}?`, {
+        reply_markup: {
+          inline_keyboard: inlineKeyboard,
+        },
+      });
     }
-else {
-
-    const questionData = generateQuestion();
-
-    const options = questionData.options.map((word) => word.ukranian);
-    const correctAnswer = questionData.correctWord.ukranian;
-    let engWord = questionData.correctWord.english;
-
-    const inlineKeyboard = options.map((option, index) => [
-      {
-        text: option,
-        callback_data:
-          option === correctAnswer ? "correct-" + engWord : "wrong-" + engWord,
-      },
-    ]);
-
-    bot.sendMessage(chatId, `Як перекладається слово ${engWord}?`, {
-      reply_markup: {
-        inline_keyboard: inlineKeyboard,
-      },
-    });
-  }
   }
   if (data.startsWith("wrong")) {
     bot.answerCallbackQuery(msg.id, {
@@ -1962,11 +1926,12 @@ else {
     );
   }
 
-
- 
   // english-save-progress
   if (data == "english-save-progress") {
-    bot.sendMessage(chatId, 'Твій прогрес залишився збереженим. Продовжуй розвиватись далі!')
+    bot.sendMessage(
+      chatId,
+      "Твій прогрес залишився збереженим. Продовжуй розвиватись далі!"
+    );
   }
   if (data == "english-nullable-progress-confirm") {
     let currentUser = await User.findOne({ idGroup: chatId });
@@ -1981,7 +1946,6 @@ else {
   if (data == "english-statistics") {
     let currentUser = await User.findOne({ idGroup: chatId });
     let engWord = currentUser.english;
-    
 
     // Створимо об'єкт для зберігання кількості входжень кожного слова
     let wordCount = {};
@@ -2089,10 +2053,8 @@ ${progressEngWord}
                 "style.css"
               ),
             })
-            .then(() => {
-            })
-            .catch((error) => {
-            });
+            .then(() => {})
+            .catch((error) => {});
         }
       }
     }
@@ -2288,10 +2250,8 @@ ${progressEngWord}
                   i
                 ),
               })
-              .then(() => {
-              })
-              .catch((error) => {
-              });
+              .then(() => {})
+              .catch((error) => {});
           }
         }
       }
@@ -2306,18 +2266,39 @@ ${progressEngWord}
     }
   }
 
-  if (data == "learnTheme-video") {
-    bot.sendMessage(chatId, "Ось відео по даній темі:");
+  if (data.startsWith("learnTheme")) {
+    let variant = data.split("-")[1];
+    let idTheme = data.split("-")[2];
+    let dataTheme = JSON.parse(shortId.get(idTheme));
+    console.log(dataTheme);
+    if (variant == "video") {
+      let oldMessage = await bot.sendMessage(
+        chatId,
+        "⏳ Зачекайте, відео по даній темі завантажується..."
+      );
+      await bot.sendVideo(chatId, dataTheme.video[0].url)
+      await bot.deleteMessage(chatId, oldMessage.message_id)
+    }
+    if (variant == "tests") {
+      bot.sendMessage(chatId, "Ось тести по даній темі:");
+
+for (let test of dataTheme.tests) {
+  let idTest = uuid().slice(0, 8);
+  await bot.sendPhoto(chatId, await testsImage(test.title), {
+    caption: "<b>" + test.title + "</b>",
+    ...keyboards.createTest(test.options, idTest),
+    parse_mode: "HTML",
+  });
+}
+    }
+    if (variant == "practice") {
+      bot.sendMessage(chatId, "Ось практичне завдання по даній темі:");
+    }
+      if (variant == "similarTags") {
+        bot.sendMessage(chatId, "Ось схожі теми:");
+      }
   }
-  if (data == "learnTheme-tests") {
-    bot.sendMessage(chatId, "Ось тести по даній темі:");
-  }
-  if (data == "learnTheme-practice") {
-    bot.sendMessage(chatId, "Ось практичне завдання по даній темі:");
-  }
-  if (data == "learnTheme-similarTags") {
-    bot.sendMessage(chatId, "Ось схожі теми:");
-  }
+  
   if (data == "regStudent") {
     newUserStatus = "name";
     bot.sendMessage(chatId, "Вкажіть ім'я учня");
@@ -2402,7 +2383,7 @@ ${progressEngWord}
 
     bot.sendMessage(
       chatId,
-      "Тема: " + themes[themeIndex].title + " обрана!",
+      "Тема: <b>" + themes[themeIndex].title + "</b> обрана!",
       keyboards.themesKeyboard2(currentThemes, formSoloImg.themes)
     );
   }
@@ -2414,7 +2395,7 @@ ${progressEngWord}
 
     bot.sendMessage(
       chatId,
-      "Тема: " + themes[themeIndex].title + " обрана!",
+      "Тема: <b>" + themes[themeIndex].title + "</b> обрана!",
       keyboards.themesKeyboard2(currentThemes, formSoloImg.themes)
     );
   }
@@ -2422,17 +2403,15 @@ ${progressEngWord}
     bot.sendMessage(
       chatId,
       "Оберіть учня щоб додати або відняти алмази:",
-      await keyboards.chooseStudents('balance')
+      await keyboards.chooseStudents("balance")
     );
   }
   if (data.startsWith("balance-/-")) {
     let splitData = data.split("-/-");
-    let id = splitData[splitData.length-1]
+    let id = splitData[splitData.length - 1];
     bot.sendMessage(
       chatId,
-      `Учень <b>${getNamesOneStudentByIdGroup(
-        id
-      )}</b> обраний. 
+      `Учень <b>${getNamesOneStudentByIdGroup(id)}</b> обраний. 
 Ви хочете додати алмази чи відняти?`,
       { parse_mode: "HTML", ...keyboards.adminManageBalance(id) }
     );
@@ -2493,45 +2472,45 @@ ${progressEngWord}
           });
           return links;
         }
-        let kb = await keyboards.theme(currentTheme);
+        let idTheme = shortId.set(currentTheme);
 
-               await bot.sendPhoto(chatId, currentTheme.default.images[0].url, {
-                 caption: `
+        let kb = await keyboards.theme(currentTheme, idTheme);
+
+        await bot.sendPhoto(chatId, currentTheme.default.images[0].url, {
+          caption: `
 *Вивчаємо тему: ${currentTheme.title.trim()}*
 *Скорочено: ${currentTheme.speedCode.trim()}*
 ${currentTheme.description}
   `,
-                 parse_mode: "Markdown",
-               });
+          parse_mode: "Markdown",
+        });
 
-let allCode = ''
-for (let item of currentTheme.default.code) {
-  allCode += `
+        let allCode = "";
+        for (let item of currentTheme.default.code) {
+          allCode += `
 🧑‍💻 ${item.title}
 \`${item.body}\``;
-}
+        }
 
-let allSandbox = "";
-for (let item of currentTheme.default.sandbox) {
-  allSandbox += `
+        let allSandbox = "";
+        for (let item of currentTheme.default.sandbox) {
+          allSandbox += `
 🔸 [${item.title}](${item.url.trim()})`;
-}
-let allFigma = "";
-for (let item of currentTheme.default.figma) {
-  allFigma += `
+        }
+        let allFigma = "";
+        for (let item of currentTheme.default.figma) {
+          allFigma += `
 🔸 [${item.title}](${item.url.trim()})`;
-}
-let allLinks = "";
-for (let item of currentTheme.links) {
-  allLinks += `
+        }
+        let allLinks = "";
+        for (let item of currentTheme.links) {
+          allLinks += `
 🔹 [${item.title}](${item.url.trim()})`;
-}
+        }
 
-
-
-            await bot.sendMessage(
-              chatId,
-              `
+        await bot.sendMessage(
+          chatId,
+          `
 *Приклади коду:*
 ${allCode}
  
@@ -2545,21 +2524,20 @@ ${allFigma}
 ${allLinks}
  
   `,
-              { parse_mode: "Markdown", disable_web_page_preview: true, ...kb }
-            );    
+          { parse_mode: "Markdown", disable_web_page_preview: true, ...kb }
+        );
 
+        //       bot.sendMessage(
+        //         chatId,
+        //         `
+        // **${currentTheme.title.trim()}**
 
-  //       bot.sendMessage(
-  //         chatId,
-  //         `
-  // **${currentTheme.title.trim()}**
-  
-  // ${currentTheme.description}
+        // ${currentTheme.description}
 
-  // <b>${generateHTMLLinks()}</b>
-  // `,
-  //         { parse_mode: "Markdown", ...kb }
-  //       );
+        // <b>${generateHTMLLinks()}</b>
+        // `,
+        //         { parse_mode: "Markdown", ...kb }
+        //       );
       }
 
       if (typeThemes == "tests") {
@@ -2621,6 +2599,9 @@ id: ${idTest}
               parse_mode: "HTML",
             });
           });
+
+
+
         }
       }
 
@@ -3023,14 +3004,14 @@ ${readyThemes}
     if (text == "changeSchedule") {
     }
     if (text == "statistics") {
-       bot.sendMessage(
-         chatId,
-         `
+      bot.sendMessage(
+        chatId,
+        `
 <b>Вітаю вас в розділі Статистика.</b>
 Оберіть період за який вас цікавить отримати статистику про ваші досягнення 👇
        `,
-         { parse_mode: "HTML", ...keyboards.statPeriod(chatId) }
-       );
+        { parse_mode: "HTML", ...keyboards.statPeriod(chatId) }
+      );
     }
     if (text == "competitions") {
       let currentUser = await User.findOne({ idGroup: chatId });
@@ -3089,7 +3070,7 @@ ${curMoney} грн
   }
 
   if (data == "students") {
-    let kb = await keyboards.chooseStudents('showStudent');
+    let kb = await keyboards.chooseStudents("showStudent");
     let students = await User.find({});
     bot.sendMessage(
       chatId,
@@ -3101,28 +3082,25 @@ ${curMoney} грн
       }
     );
   }
-   if (data == "pays") {
-     let students = await User.find({});
-     bot.sendMessage(
-       chatId,
-       `Інформація про оплати учнів:
+  if (data == "pays") {
+    let students = await User.find({});
+    bot.sendMessage(
+      chatId,
+      `Інформація про оплати учнів:
 В цьому місяці прибуток:
 
 Вже прийшли кошти:
 Ще мають прийти:
 Оплати по датам:
 `,
-       {
-         parse_mode: "HTML",
-       }
-     );
-   }
-   if (data == "adminEnglishStat") {
-    console.log('012')
-    bot.sendMessage(
-      chatId,
-      "Статистика вивчення англійських слів",
+      {
+        parse_mode: "HTML",
+      }
     );
+  }
+  if (data == "adminEnglishStat") {
+    console.log("012");
+    bot.sendMessage(chatId, "Статистика вивчення англійських слів");
   }
   if (data == "registeredLesson") {
     bot.sendMessage(
@@ -3140,11 +3118,14 @@ ${curMoney} грн
   }
 
   if (data == "quiz") {
-    bot.sendMessage(chatId, `<b>Змагання розпочато.</b> 
+    bot.sendMessage(
+      chatId,
+      `<b>Змагання розпочато.</b> 
     В змаганні приймають участь 5 людей: 
     
-    `
-    , keyboards.registeredQuiz); // result(chatId)
+    `,
+      keyboards.registeredQuiz
+    ); // result(chatId)
   }
 
   if (data == "templates") {
@@ -3356,23 +3337,21 @@ ID заняття:
 
     let formatPhoto = [];
 
-   
- if (formSoloImg.photos.length >= 1) {
-   formSoloImg.photos.forEach((photo) => {
-     formatPhoto.push({
-       type: "photo",
-       media: photo,
-       caption: `☝️ Декілька фотографій, на яких зображені результати нашої роботи та код який ми вивчаємо👨‍🎓`,
-     });
-   });
+    if (formSoloImg.photos.length >= 1) {
+      formSoloImg.photos.forEach((photo) => {
+        formatPhoto.push({
+          type: "photo",
+          media: photo,
+          caption: `☝️ Декілька фотографій, на яких зображені результати нашої роботи та код який ми вивчаємо👨‍🎓`,
+        });
+      });
 
-   await bot.sendMediaGroup(formSoloImg.idGroup, formatPhoto);
- }
+      await bot.sendMediaGroup(formSoloImg.idGroup, formatPhoto);
+    }
 
     console.log("----");
     console.log(formSoloImg.themes);
     console.log("----");
-
 
     let resThemesBtns = [];
     formSoloImg.themes.forEach((theme) => {
@@ -3388,7 +3367,7 @@ ID заняття:
       },
     };
 
-    addUserMoney(formSoloImg.idGroup, formSoloImg.grade*20);
+    addUserMoney(formSoloImg.idGroup, formSoloImg.grade * 20);
 
     await bot.sendPhoto(
       formSoloImg.idGroup,
@@ -3506,14 +3485,14 @@ ${theme.similarTags}
       console.log(e);
     }
   }
-   if (data.startsWith("help-video-")) {
-     let id = data.slice(11); // ec31bbe0
-     bot.sendMessage(
-       chatId,
-       "Ось відео по цій темі 👇 \n<i>Потрібно трішки зачекати, відео завантажується...<i>", 
-       {parse_mode: 'HTML'}
-     );
-   }
+  if (data.startsWith("help-video-")) {
+    let id = data.slice(11); // ec31bbe0
+    bot.sendMessage(
+      chatId,
+      "Ось відео по цій темі 👇 \n<i>Потрібно трішки зачекати, відео завантажується...<i>",
+      { parse_mode: "HTML" }
+    );
+  }
 
   if (data.startsWith("help-article-")) {
     let id = data.slice(13); // ec31bbe0
@@ -3561,13 +3540,9 @@ bot.on("photo", async (msg) => {
   formSoloImg.photos.push("./" + pathToImg);
 });
 
-
-
-
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
 
 export {
   testsID,

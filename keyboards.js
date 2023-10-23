@@ -12,7 +12,7 @@ let namesError = [];
 
 class Keyboards {
   
-  theme = async (currentTheme) => {
+  theme = async (currentTheme, idTheme) => {
     let amountTests = currentTheme.tests.length;
     let amountSimilarTags = currentTheme.similarTags.length;
     let amountPractice = currentTheme.tasks.practice.length;
@@ -78,6 +78,8 @@ class Keyboards {
 
   }
 
+
+
     let currentKeyboard = {
       reply_markup: JSON.stringify({
         inline_keyboard: [
@@ -86,25 +88,25 @@ class Keyboards {
               text: `📹 Переглянути ${amountVideo} відео (${Math.round(
                 totalDurationInSeconds / 60
               )} хв)`,
-              callback_data: "learnTheme-video",
+              callback_data: `learnTheme-video-${idTheme}`,
             },
           ],
           [
             {
               text: `❓ Тестові питання (${amountTests} шт)`,
-              callback_data: "learnTheme-tests",
+              callback_data: `learnTheme-tests-${idTheme}`,
             },
           ],
           [
             {
               text: `🧑‍💻 Практичні завдання (${amountPractice} шт)`,
-              callback_data: "learnTheme-practice",
+              callback_data: `learnTheme-practice-${idTheme}`,
             },
           ],
           [
             {
               text: `🔗 Схожі теми (${amountSimilarTags} шт)`,
-              callback_data: "learnTheme-similarTags",
+              callback_data: `learnTheme-similarTags-${idTheme}`,
             },
           ],
         ],
