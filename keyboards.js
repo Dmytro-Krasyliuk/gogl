@@ -11,7 +11,6 @@ let namesRight = [];
 let namesError = [];
 
 class Keyboards {
-  
   theme = async (currentTheme, idTheme) => {
     let amountTests = currentTheme.tests.length;
     let amountSimilarTags = currentTheme.similarTags.length;
@@ -20,65 +19,61 @@ class Keyboards {
     let totalDurationInSeconds = 0;
 
     try {
-    amountVideo = currentTheme.video.length;
-    async function getDurations(videoPaths) {
-      const promises = videoPaths.map((videoPath) =>
-        getVideoDuration(videoPath)
+      amountVideo = currentTheme.video.length;
+      async function getDurations(videoPaths) {
+        const promises = videoPaths.map((videoPath) =>
+          getVideoDuration(videoPath)
+        );
+        return Promise.all(promises);
+      }
+
+      const getVideoDuration = (filePath) =>
+        new Promise((resolve, reject) => {
+          const mp4box = MP4Box.createFile();
+          const stream = fs.createReadStream(filePath);
+          let fileStart = 0;
+
+          mp4box.onReady = (info) => {
+            const duration = info.duration / info.timescale;
+            resolve(duration);
+          };
+
+          mp4box.onError = (e) => {
+            reject(new Error(`MP4Box Error: ${e}`));
+          };
+
+          stream.on("data", (buffer) => {
+            const arrayBuffer = buffer.buffer.slice(
+              buffer.byteOffset,
+              buffer.byteOffset + buffer.byteLength
+            );
+            arrayBuffer.fileStart = fileStart;
+            mp4box.appendBuffer(arrayBuffer);
+            fileStart += buffer.length;
+          });
+
+          stream.on("end", () => {
+            mp4box.flush();
+          });
+
+          stream.on("error", (error) => {
+            reject(error);
+          });
+        });
+
+      const videoPaths = currentTheme.video.map((v) =>
+        path.join(process.cwd(), v.url)
       );
-      return Promise.all(promises);
-    }
 
-    const getVideoDuration = (filePath) =>
-      new Promise((resolve, reject) => {
-        const mp4box = MP4Box.createFile();
-        const stream = fs.createReadStream(filePath);
-        let fileStart = 0;
+      try {
+        const durations = await getDurations(videoPaths);
 
-        mp4box.onReady = (info) => {
-          const duration = info.duration / info.timescale;
-          resolve(duration);
-        };
-
-        mp4box.onError = (e) => {
-          reject(new Error(`MP4Box Error: ${e}`));
-        };
-
-        stream.on("data", (buffer) => {
-          const arrayBuffer = buffer.buffer.slice(
-            buffer.byteOffset,
-            buffer.byteOffset + buffer.byteLength
-          );
-          arrayBuffer.fileStart = fileStart;
-          mp4box.appendBuffer(arrayBuffer);
-          fileStart += buffer.length;
-        });
-
-        stream.on("end", () => {
-          mp4box.flush();
-        });
-
-        stream.on("error", (error) => {
-          reject(error);
-        });
-      });
-
-    const videoPaths = currentTheme.video.map((v) =>
-      path.join(process.cwd(), v.url)
-    );
-
-    try {
-      const durations = await getDurations(videoPaths);
-
-      totalDurationInSeconds = durations.reduce((acc, curr) => acc + curr, 0);
-      console.log(`Total Duration: ${totalDurationInSeconds} seconds`);
-    } catch (error) {
-      console.error(`Error: ${error}`);
-    }
-  } catch (e) {
-
-  }
-
-
+        totalDurationInSeconds = durations.reduce((acc, curr) => acc + curr, 0);
+        console.log(`Total Duration: ${totalDurationInSeconds} seconds`);
+      } catch (error) {
+        console.error(`Error: ${error}`);
+      }
+    } catch (e) {}
 
     let currentKeyboard = {
       reply_markup: JSON.stringify({
@@ -342,7 +337,7 @@ ${namesError}
       }
     });
 
-    newKb[newKb.length-1].splice(0, 1)
+    newKb[newKb.length - 1].splice(0, 1);
 
     return {
       inline_keyboard: newKb,
@@ -651,10 +646,7 @@ ${namesError}
 
   photoKeyboard = {
     reply_markup: JSON.stringify({
-      keyboard: [
-        [{ text: "Підтвердити фото" }],
-        [{ text: "Без фото-звіту" }],
-      ],
+      keyboard: [[{ text: "Підтвердити фото" }], [{ text: "Без фото-звіту" }]],
       resize_keyboard: true,
     }),
   };
@@ -778,11 +770,16 @@ ${namesError}
           { text: "🥇 Мої оцінки", callback_data: "user-myGrade" },
         ],
         [
+          { text: "⌨️ Клавіатура", callback_data: "user-keyboard" },
+          { text: "🥇 Мої оцінки", callback_data: "user-myGrade" },
+        ],
+        [
           { text: "📈 Статистика", callback_data: "user-statistics" },
           { text: "⚙️ Налаштування", callback_data: "user-settings" },
         ],
         [{ text: "🎓 Вивчити нову тему", callback_data: "user-newTheme" }],
         [{ text: "🇺🇸 Вивчити IT Англійську", callback_data: "user-english" }],
+        [{ text: "🧩 Галерея елементів", callback_data: "user-elements" }],
         [{ text: "📝 Отримати завдання", callback_data: "user-getTasks" }],
         [{ text: "🗂 Збережені роботи", callback_data: "user-savedWork" }],
         [{ text: "🔍 Спілкування з Chat GPT", callback_data: "user-gpt" }],

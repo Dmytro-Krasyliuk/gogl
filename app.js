@@ -88,7 +88,8 @@ let newUserStatus;
 let newUser = {
   name: "",
   family: "",
-  age: "",
+  age: 0,
+  car: 'car-3.svg',
   group: "",
   price: "",
   date: {
@@ -300,6 +301,7 @@ function viewCal(year, month, chat_id, cbq_id = null, message_id = null) {
     query("sendMessage", data);
   }
 }
+
 async function query(method, fields) {
   let ca = request({
     url: "https://api.telegram.org/bot" + token + "/" + method,
@@ -416,6 +418,8 @@ function addNewUser(newUser) {
     name: newUser.name,
     lastName: newUser.family,
     days: newUser.days,
+    age: newUser.age,
+    car: newUser.car,
     pay: {
       day: newUser.day,
       month: newUser.month,
@@ -636,7 +640,7 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
         }
         allStudentsData.push({
           studentName: getNamesOneStudentByIdGroup(student.idStudent),
-          studentCar: "/img/car-1.png",
+          studentCar: `${student.car}`,
           studentId: student.idStudent,
           myProfile: myProfile,
           studentCurrentPosition: 3,
@@ -900,11 +904,8 @@ const bot = new TelegramApi(token, { polling: true });
 bot.setMyCommands([
   { command: "/start", description: "start" },
   { command: "/admin", description: "admin" },
-  { command: "/keyboard", description: "keyboard" },
-  { command: "/themes", description: "themes" },
-  { command: "/elements", description: "elements" },
-  { command: "/results", description: "показати результати" },
-  { command: "/help", description: "ok" },
+  { command: "/themes", description: "Усі теми" },
+  { command: "/results", description: "Результати тестів" },
 ]);
 
 await Practice.deleteMany({});
@@ -1277,7 +1278,7 @@ bot.on("message", async (msg) => {
         bot.sendMessage(chatId, "Вкажіть вік учня");
         newUserStatus = "age";
       } else if (newUserStatus == "age") {
-        newUser.age = text;
+        newUser.age = Number(text);
         bot.sendMessage(
           chatId,
           "Оберіть день занятя",
@@ -1356,12 +1357,7 @@ ${link.invite_link}
       }
     }
 
-    if (text === "/elements") {
-      bot.sendMessage(chatId, `elements`, {
-        ...keyboards.elementsCategory,
-        parse_mode: "HTML",
-      });
-    }
+
 
     // commands
     if (text === "/themes") {
@@ -1411,9 +1407,7 @@ ${link.invite_link}
       //   bot.answerCallbackQuery(callbackQueryId, { text, showAlert });
     }
 
-    if (text === "/keyboard") {
-      bot.sendMessage(chatId, "symbols", keyboards.keyboardSymbols);
-    }
+    
 
     // commands
     if (text === "/results") {
@@ -1770,6 +1764,19 @@ bot.on("callback_query", async (msg) => {
       }
     }
   }
+  if (data === "user-keyboard") {
+    bot.sendMessage(
+      chatId,
+      "Клікни на кнопку щоб дізнатись як зробити потрібний символ на клавіатурі 👇",
+      keyboards.keyboardSymbols
+    );
+  }
+    if (data === "user-elements") {
+      bot.sendMessage(chatId, `elements`, {
+        ...keyboards.elementsCategory,
+        parse_mode: "HTML",
+      });
+    }
 
   if (data == "user-changeSchedule") {
     let users = await User.find({});
@@ -2272,12 +2279,22 @@ ${progressEngWord}
     let dataTheme = JSON.parse(shortId.get(idTheme));
     console.log(dataTheme);
     if (variant == "video") {
-      let oldMessage = await bot.sendMessage(
-        chatId,
-        "⏳ Зачекайте, відео по даній темі завантажується..."
-      );
-      await bot.sendVideo(chatId, dataTheme.video[0].url)
-      await bot.deleteMessage(chatId, oldMessage.message_id);
+      let amountVideo = dataTheme.video.length;
+      if (amountVideo == 0) {
+         await bot.sendMessage(
+           chatId,
+           "😔 На жаль, відео по цій темі ще немає"
+         );
+      } 
+      else {
+
+        let oldMessage = await bot.sendMessage(
+          chatId,
+          "⏳ Зачекайте, відео по даній темі завантажується..."
+          );
+          await bot.sendVideo(chatId, dataTheme.video[0].url)
+          await bot.deleteMessage(chatId, oldMessage.message_id);
+        }
     }
     if (variant == "tests") {
       bot.sendMessage(chatId, "Ось тести по даній темі:");
@@ -2479,7 +2496,15 @@ ${tasksItems}
 
     }
       if (variant == "similarTags") {
-        bot.sendMessage(chatId, "Ось схожі теми:");
+        let tags = ``;
+        for (let tag of dataTheme.similarTags) {
+tags += `\n🌟 ${tag}`;
+        }
+        bot.sendMessage(
+          chatId,
+          "<b>Ось схожі теми які корисно тобі вивчити:</b> " + tags,
+          {parse_mode: 'HTML'}
+        );
       }
   }
   
@@ -3045,6 +3070,7 @@ ${readyThemes}
     if (text == "getCoins") {
     }
     if (text == "changeCar") {
+      
     }
     if (text == "balance") {
       let currentUser = await User.findOne({ idGroup: chatId });

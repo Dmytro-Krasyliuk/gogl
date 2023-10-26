@@ -41,7 +41,8 @@ let Practice = mongoose.model("practice", practiceSchema);
 const schema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
-
+  age: { type: Number },
+  car: { type: String },
   name: { type: String },
   days: { type: Array },
   pay: {
