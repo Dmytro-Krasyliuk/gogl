@@ -64,6 +64,10 @@ let asdfdf = [
   { day: "Середа", time: "22:15" },
 ];
 
+
+
+
+
 let typeThemes = "practice";
 let adminkaGroupId = -889347051;
 let waitCardNumber = false;
@@ -132,6 +136,10 @@ app.use(express.static(__dirname + "/public"));
 app.use(json());
 app.use(cors());
 app.use(express.json());
+
+
+// await User.updateMany({}, { $set: { car: "car-3.svg" } });
+
 
 async function addUserMoney(chatId, money) {
   let currentUser = await User.findOne({ idGroup: chatId });
