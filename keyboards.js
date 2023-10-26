@@ -678,6 +678,32 @@ ${namesError}
     };
   };
 
+  carShop = (money, id) => {
+    return {
+      reply_markup: JSON.stringify({
+        inline_keyboard: [
+          [
+            { text: `◀️`, callback_data: `carshop-left-${id}` },
+            { text: `💎 ${money} 💎`, callback_data: `carshop-price-${id}` },
+            { text: `▶️`, callback_data: `carshop-right-${id}` },
+          ],
+          [{ text: `🛍 Купити авто`, callback_data: `carshop-buy-${id}` }],
+        ],
+      }),
+    };
+  };
+
+  carKb = (user) => {
+    return {
+      reply_markup: JSON.stringify({
+        inline_keyboard: [
+          [{ text: `🛍 В магазин`, callback_data: "car-shop" }],
+          [{ text: `🚛 Мій гараж`, callback_data: "car-garage" }],
+        ],
+      }),
+    };
+  };
+
   adminMain = {
     reply_markup: JSON.stringify({
       inline_keyboard: [

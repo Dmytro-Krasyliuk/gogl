@@ -13,6 +13,111 @@ let templates = [
   },
 ];
 
+let cars = [
+  {
+    img: 'car-1.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-2.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-3.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-4.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-5.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-6.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-7.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-8.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-9.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-10.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-11.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-12.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-13.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-14.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-15.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-16.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-17.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-18.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-19.svg',
+    price: 320,
+    title: '',
+  },
+  {
+    img: 'car-20.svg',
+    price: 320,
+    title: '',
+  },
+]
+
+
+
 let technologiesStack = [
   "AWS",
   "Azure",
@@ -39387,4 +39492,5 @@ export {
   adminId,
   elementsData,
   apps,
+  cars
 };

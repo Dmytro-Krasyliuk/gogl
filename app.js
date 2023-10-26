@@ -21,8 +21,9 @@ import escapeHTML from "escape-html";
 import dotenv from "dotenv";
 import request from "request";
 import MP4Box from "mp4box";
+import sharp from 'sharp'
 
-import { themes, students, templates, elementsData, apps } from "./data.js";
+import { themes, students, templates, elementsData, apps, cars } from "./data.js";
 import { result } from "./rss/quiz.js";
 import time from "./other/time.js";
 import { drawResult } from "./draw/quiz.js";
@@ -37,6 +38,32 @@ import { Keyboards } from "./keyboards.js";
 import { englishWords } from "./english.js";
 import { drawEnglish } from "./draw/english.js";
 import { randomUUID } from "crypto";
+
+
+ function showCarShop(indexCar, chatId) {
+   let urlPhoto = "./img/cars/" + cars[indexCar].img;
+   const svgData = fs.readFileSync(urlPhoto);
+   sharp(svgData)
+     .resize(600)
+     .png()
+     .toFile("output-svg.png")
+     .then((data) => {
+       // Отправить PNG изображение
+
+       bot.sendPhoto(chatId, "./output-svg.png", {
+         caption: `
+<b>ВИ В МАГАЗИНІ АВТІВОК</b>
+
+<b>Авто:</b> ${cars[indexCar].title} 
+<b>Вартість:</b>  ${cars[indexCar].price} 💎`,
+         parse_mode: "HTML",
+         ...keyboards.carShop(cars[indexCar].price, indexCar),
+       });
+     });
+ }
+   
+
+
 
 class ShortId {
   constructor() {
@@ -67,7 +94,7 @@ let asdfdf = [
 
 
 
-
+let indexCar = 0;
 let typeThemes = "practice";
 let adminkaGroupId = -889347051;
 let waitCardNumber = false;
@@ -93,7 +120,10 @@ let newUser = {
   name: "",
   family: "",
   age: 0,
-  car: 'car-3.svg',
+  car: {
+      currentCar: "car-3.svg",
+      myCars: ["car-3.svg"],
+    },
   group: "",
   price: "",
   date: {
@@ -138,7 +168,19 @@ app.use(cors());
 app.use(express.json());
 
 
-// await User.updateMany({}, { $set: { car: "car-3.svg" } });
+// await User.updateMany(
+//   {},
+//   {
+//     $set: {
+//       car: {
+
+//         currentCar: "car-3.svg",
+//         myCars: ["car-3.svg"],
+//       }
+
+//     },
+//   }
+// );
 
 
 async function addUserMoney(chatId, money) {
@@ -637,6 +679,8 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
     idPractice: idTask,
   });
 
+  console.log('studentPractice ', studentPractice)
+
   if (studentPractice) {
     let allStudentsData = [];
 
@@ -653,6 +697,7 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
           myProfile: myProfile,
           studentCurrentPosition: 3,
         });
+        console.log(allStudentsData.studentCar);
       });
     }
 
@@ -2455,11 +2500,12 @@ ${tasksItems}
        await drawPracticeTask(title, descriptionText, themes, tasks);
 
        let u = await User.findOne({idGroup: chatId})
+       console.log("car!!", u.car.currentCar);
 
 
          practiceList[i].students.push({
            idStudent: Number(chatId),
-           car: u.car,
+           car: u.car.currentCar,
            result: {
              successTask: [],
              wrongTask: [],
@@ -2993,7 +3039,7 @@ ${tasksItems}
 
               practiceList[i].students.push({
                 idStudent: Number(id),
-                car: u.car,
+                car: u.car.currentCar,
                 result: {
                   successTask: [],
                   wrongTask: [],
@@ -3078,13 +3124,68 @@ ${readyThemes}
     waitCardNumber = true;
   }
 
+  if (data == "car-shop") {
+    indexCar = 0;
+    showCarShop(indexCar, chatId);
+  }
+
+
+   if (data.startsWith("carshop")) {
+    let action = data.split('-')[1]
+    let idCar = data.split('-')[2]
+
+    if (action == 'left') {
+      indexCar--
+      showCarShop(indexCar, chatId);
+
+    } else if (action == 'right') {
+      indexCar++;
+      showCarShop(indexCar, chatId);
+
+
+    } else if (action == 'price') {
+      bot.answerCallbackQuery(msg.id, {
+        text: "Ціна автомобіля - " + cars[idCar].price + " 💎",
+        show_alert: false,
+      });
+
+    } else if (action == 'buy') {
+
+      bot.sendMessage(
+        chatId,
+        `<b>🥳 Вітаю!</b> Ти купив автомобіль ${cars[idCar].title} за ${cars[idCar].price} 💎!`,
+        {parse_mode: 'HTML'}
+      );
+    }
+   }
+   if (data == "car-garage") {
+   }
   if (data.startsWith("user-")) {
     let text = data.slice(5);
 
     if (text == "getCoins") {
     }
     if (text == "changeCar") {
-      
+      let currentUser = await User.findOne({ idGroup: chatId });
+      console.log(currentUser.car);
+      let urlPhoto = "./img/cars/" + currentUser.car.currentCar;
+
+      // Чтение SVG-файла
+      const svgData = fs.readFileSync(urlPhoto);
+
+      // Конвертировать SVG в PNG
+      sharp(svgData).resize(600).png()
+        .toFile("output-svg.png",).then(data=>{
+          // Отправить PNG изображение
+          bot.sendPhoto(chatId, "./output-svg.png", {
+            caption: `Твій автомобіль зараз виглядає так ☝️`,
+            ...keyboards.carKb()
+          });
+        })
+
+   
+
+  
     }
     if (text == "balance") {
       let currentUser = await User.findOne({ idGroup: chatId });

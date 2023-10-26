@@ -18,7 +18,7 @@ let practiceSchema = new Schema({
   codeResult: {
     html: { type: String },
     css: { type: String },
-    js: {type: String},
+    js: { type: String },
   },
   tasks: [
     {
@@ -42,7 +42,10 @@ const schema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
   age: { type: Number },
-  car: { type: String },
+  car: {
+    currentCar: { type: String },
+    myCars: { type: Array },
+  },
   name: { type: String },
   days: { type: Array },
   pay: {
