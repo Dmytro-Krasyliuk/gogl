@@ -69,11 +69,12 @@ const schema = new Schema({
 let User = mongoose.model("User", schema);
 
 const studentListPracticeSchema = new Schema({
-  idPractice: {type: String},
-  photo: {type: String},
+  idPractice: { type: String },
+  photo: { type: String },
   students: [
     {
       idStudent: { type: Number },
+      car: { type: String },
       result: {
         successTask: { type: Array },
         wrongTask: { type: Array },

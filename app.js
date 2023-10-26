@@ -2454,9 +2454,12 @@ ${tasksItems}
     `.slice(0, 1023);
        await drawPracticeTask(title, descriptionText, themes, tasks);
 
+       let u = await User.findOne({idGroup: chatId})
+
 
          practiceList[i].students.push({
            idStudent: Number(chatId),
+           car: u.car,
            result: {
              successTask: [],
              wrongTask: [],
@@ -2986,8 +2989,11 @@ ${tasksItems}
             await drawPracticeTask(title, descriptionText, themes, tasks);
 
             newGroupStudent.forEach(async (id) => {
+               let u = await User.findOne({ idGroup: chatId });
+
               practiceList[i].students.push({
                 idStudent: Number(id),
+                car: u.car,
                 result: {
                   successTask: [],
                   wrongTask: [],
