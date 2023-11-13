@@ -1,0 +1,16 @@
+  669  sudo useradd dimaa
+  670  who -T
+  671  who 
+  672  sudo passwd dimaa
+  674  sudo useradd -m dimaa
+  675  id -u username
+  676  id -u dimaa
+  677  whoami
+  678  su dimaa
+  679  who
+  680  mesg "df"
+  681  mesg
+  682  netstat -v
+  683  uptime
+  684  write dimaa 
+  685  history

@@ -48,11 +48,12 @@ let technologiesImages = {
 
 
 async function drawSolo(name, grade, technologies, date, teacher, themes) {
-  let themes_ = [...themes];
-  for (let i = 0; i < themes_.length; i++) {
-    if (themes_[i].startsWith('++')) {
-      themes_.splice(i, 1);
-    }
+  let themes_ = [];
+  for (let i = 0; i < themes.length; i++) {
+    console.log(themes[i]);
+    try {
+      themes_.push(themes[i].details.title);
+    } catch (e) {}
   }
   // Dimensions for the image
    

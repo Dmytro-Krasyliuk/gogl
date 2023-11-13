@@ -16,6 +16,8 @@
 // );
 // console.log(a);
 
+
+
 // ******** Chat GPT
 // // Вставьте ваш API-ключ здесь
 // const API_KEY = "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";

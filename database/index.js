@@ -55,6 +55,7 @@ const schema = new Schema({
     sum: { type: String },
     isPay: { type: Boolean },
   },
+  savedWorks: {type: Array},
   events: { type: Array },
   quiz: {
     allMoney: { type: Number },

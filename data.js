@@ -61,7 +61,7 @@ let cars = [
   },
   {
     img: 'car-10.svg',
-    price: 320,
+    price: 32000,
     title: '',
   },
   {
@@ -274,8 +274,14 @@ let apps = [
 
 let elementsData = {
   button: {
-    title: ``,
-    description: ``,
+    title: `Кнопки`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
     variants: [
       {
         id: uuid(),
@@ -406,6 +412,1151 @@ let elementsData = {
           "script.js": ``,
         },
         result: "https://cdn-icons-png.flaticon.com/512/6028/6028690.png",
+      },
+    ],
+  },
+  photo: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  text: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  headings: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  icons: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  background: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  gallery: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  cards: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  tooltips: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  progressbars: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  menu: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  forms: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  tabs: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  links: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  accordions: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  banners: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  tables: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  polls: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+
+  pagination: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  sliders: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  animations: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  lists: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  breadcrumbs: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  calendar: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  maps: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  popups: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  quotes: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "social-buttons": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  sorting: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  cart: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "like-buttons": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  logos: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  searchbars: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  compare: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "social-buttons": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  widgets: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "hamburger-menu": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  preloaders: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  skeletons: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "chats-forums": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "like-buttons": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  "scroll-up": {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  players: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  avatars: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
+      },
+    ],
+  },
+  filters: {
+    title: `Фото`,
+    description: `
+<b>Кнопки - є одними з основних елементів на сторінці.</b>
+
+<b>Найпопулярніші кнопки:</b>
+Купити | Почати гру |
+Переглянути | Замовити
+Видалити | Створити`,
+    variants: [
+      {
+        id: uuid(),
+        video: "./public/video/button/1.mp4",
+        title: `Проста фотографія з інтернету`,
+        description: ``,
+        try: [],
+        code: {
+          "index.html": `<img src="https://34travel.me/media/upload/images/2020/MAY/arch2020/1.jpg" alt="">`,
+          "style.css": ``,
+          "script.js": ``,
+        },
+        result:
+          "https://res.cloudinary.com/teepublic/image/private/s--dQw2Q36k--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_fffffe,e_outline:48/co_fffffe,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1540801018/production/designs/3405364_0.jpg",
       },
     ],
   },
@@ -997,8 +2148,8 @@ let themes = [
               options: [
                 "Не головний контент",
                 "Головний контент",
-                "Навігаційний контент",
-                "Не має значення для SEO",
+                "Навігація",
+                "Не має значення",
               ],
             },
           ],

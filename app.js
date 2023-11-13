@@ -21,9 +21,16 @@ import escapeHTML from "escape-html";
 import dotenv from "dotenv";
 import request from "request";
 import MP4Box from "mp4box";
-import sharp from 'sharp'
+import sharp from "sharp";
 
-import { themes, students, templates, elementsData, apps, cars } from "./data.js";
+import {
+  themes,
+  students,
+  templates,
+  elementsData,
+  apps,
+  cars,
+} from "./data.js";
 import { result } from "./rss/quiz.js";
 import time from "./other/time.js";
 import { drawResult } from "./draw/quiz.js";
@@ -39,31 +46,34 @@ import { englishWords } from "./english.js";
 import { drawEnglish } from "./draw/english.js";
 import { randomUUID } from "crypto";
 
+let modeGPT = false;
 
- function showCarShop(indexCar, chatId) {
-   let urlPhoto = "./img/cars/" + cars[indexCar].img;
-   const svgData = fs.readFileSync(urlPhoto);
-   sharp(svgData)
-     .resize(600)
-     .png()
-     .toFile("output-svg.png")
-     .then((data) => {
-       // Отправить PNG изображение
+function showCarShop(indexCar, chatId, myCars) {
+  let urlPhoto = "./img/cars/" + cars[indexCar].img;
+  const svgData = fs.readFileSync(urlPhoto);
+  sharp(svgData)
+    .resize(600)
+    .png()
+    .toFile("output-svg.png")
+    .then((data) => {
+      // Отправить PNG изображение
+      let status = "";
+      if (myCars.includes(cars[indexCar].img)) {
+        status = "buyed";
+      }
 
-       bot.sendPhoto(chatId, "./output-svg.png", {
-         caption: `
+      bot.sendPhoto(chatId, "./output-svg.png", {
+        caption: `
 <b>ВИ В МАГАЗИНІ АВТІВОК</b>
+<code>CAR_ID: ${indexCar + 1}</code>
 
 <b>Авто:</b> ${cars[indexCar].title} 
 <b>Вартість:</b>  ${cars[indexCar].price} 💎`,
-         parse_mode: "HTML",
-         ...keyboards.carShop(cars[indexCar].price, indexCar),
-       });
-     });
- }
-   
-
-
+        parse_mode: "HTML",
+        ...keyboards.carShop(cars[indexCar].price, indexCar, status),
+      });
+    });
+}
 
 class ShortId {
   constructor() {
@@ -90,9 +100,6 @@ let asdfdf = [
   { day: "Понеділок", time: "21:30" },
   { day: "Середа", time: "22:15" },
 ];
-
-
-
 
 let indexCar = 0;
 let typeThemes = "practice";
@@ -121,9 +128,9 @@ let newUser = {
   family: "",
   age: 0,
   car: {
-      currentCar: "car-3.svg",
-      myCars: ["car-3.svg"],
-    },
+    currentCar: "car-3.svg",
+    myCars: ["car-3.svg"],
+  },
   group: "",
   price: "",
   date: {
@@ -133,6 +140,7 @@ let newUser = {
   },
   contact: "",
   days: [],
+  savedWorks: [],
 };
 let oldMessage = "";
 let lastMsgId = 0;
@@ -167,20 +175,42 @@ app.use(json());
 app.use(cors());
 app.use(express.json());
 
-
 // await User.updateMany(
 //   {},
 //   {
 //     $set: {
-//       car: {
-
-//         currentCar: "car-3.svg",
-//         myCars: ["car-3.svg"],
-//       }
-
+//       savedWorks: [],
 //     },
 //   }
 // );
+
+
+function findPath(obj, target, currentPath = []) {
+  for (let key in obj) {
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      const newPath = findPath(obj[key], target, currentPath.concat(key));
+      if (newPath.length > 0) {
+        return newPath;
+      }
+    } else if (JSON.stringify(obj[key]) === JSON.stringify(target)) {
+      currentPath.push(key);
+      return currentPath;
+    }
+  }
+  return [];
+}
+function accessNestedObject(obj, path) {
+  let currentLevel = obj;
+  for (let key of path) {
+    currentLevel = currentLevel[key];
+    if (currentLevel === undefined) {
+      return undefined; // Возвращаем undefined, если путь недопустим
+    }
+  }
+  return currentLevel;
+}
+
+
 
 
 async function addUserMoney(chatId, money) {
@@ -470,6 +500,7 @@ function addNewUser(newUser) {
     days: newUser.days,
     age: newUser.age,
     car: newUser.car,
+    savedWorks: newUser.savedWorks,
     pay: {
       day: newUser.day,
       month: newUser.month,
@@ -668,6 +699,58 @@ app.get("/sandbox-elements/:idTask", async (req, res) => {
 app.get("/", async (req, res) => {
   res.render("practice", {});
 });
+app.get("/get/practice/:idTask/", async (req, res) => {
+  let idTask = req.params.idTask;
+  let task = await Practice.findOne({ id: idTask });
+
+  let studentPractice = await studentListPractice.findOne({
+    idPractice: idTask,
+  });
+
+  console.log("studentPractice ", studentPractice);
+
+  if (studentPractice) {
+    let allStudentsData = [];
+
+    if (studentPractice) {
+      studentPractice.students.forEach((student) => {
+        let myProfile = "";
+        allStudentsData.push({
+          studentName: "Incognito",
+          studentCar: `${student.car}`,
+          studentId: student.idStudent,
+          myProfile: myProfile,
+          studentCurrentPosition: 3,
+        });
+        console.log(allStudentsData.studentCar);
+      });
+    }
+
+    let HTML = task.codeResult.html;
+    let CSS = task.codeResult.css;
+    let JS = task.codeResult.js;
+    let taskName = task.name;
+
+    let data = {
+      nameStudent: nameStudent,
+      idStudent: idStudent,
+      idTask: idTask,
+      taskName: taskName,
+      allStudentsData: allStudentsData,
+      task: task,
+      tasks: task.tasks,
+      code: {
+        HTML: HTML,
+        CSS: CSS,
+        JS: JS,
+      },
+    };
+
+    res.render("practice", data);
+  }
+  res.render("practice", {});
+});
+
 
 app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
   let idTask = req.params.idTask;
@@ -679,7 +762,7 @@ app.get("/get/practice/:idTask/:idStudent", async (req, res) => {
     idPractice: idTask,
   });
 
-  console.log('studentPractice ', studentPractice)
+  console.log("studentPractice ", studentPractice);
 
   if (studentPractice) {
     let allStudentsData = [];
@@ -965,6 +1048,65 @@ await Practice.deleteMany({});
 await studentListPractice.deleteMany({});
 
 let idPracticeTask = [125, 126];
+
+
+
+async function createLearnTheme (currentTheme, chatId) {
+   let idTheme = shortId.set(currentTheme);
+
+        let kb = await keyboards.theme(currentTheme, idTheme);
+
+        await bot.sendPhoto(chatId, currentTheme.default.images[0].url, {
+          caption: `
+*Вивчаємо тему: ${currentTheme.title.trim()}*
+*Скорочено: ${currentTheme.speedCode.trim()}*
+${currentTheme.description}
+  `,
+          parse_mode: "Markdown",
+        });
+
+        let allCode = "";
+        for (let item of currentTheme.default.code) {
+          allCode += `
+🧑‍💻 ${item.title}
+\`${item.body}\``;
+        }
+
+        let allSandbox = "";
+        for (let item of currentTheme.default.sandbox) {
+          allSandbox += `
+🔸 [${item.title}](${item.url.trim()})`;
+        }
+        let allFigma = "";
+        for (let item of currentTheme.default.figma) {
+          allFigma += `
+🔸 [${item.title}](${item.url.trim()})`;
+        }
+        let allLinks = "";
+        for (let item of currentTheme.links) {
+          allLinks += `
+🔹 [${item.title}](${item.url.trim()})`;
+        }
+
+        await bot.sendMessage(
+          chatId,
+          `
+*Приклади коду:*
+${allCode}
+ 
+*Приклади в пісочниці:*
+${allSandbox}
+
+*Приклади в Figma:*
+${allFigma}
+
+*Посилання по темі:*
+${allLinks}
+ 
+  `,
+          { parse_mode: "Markdown", disable_web_page_preview: true, ...kb }
+        );
+}
 
 // User.updateMany({}, { $set: { english: [] } })
 //   .then(result => {
@@ -1279,11 +1421,106 @@ bot.onText(/\/start (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const param = match[1];
 
-  // https:t.me/DimaNice_Bot?start=SOME_PARAM
-  if (param === "SOME_PARAM") {
+  if (param === "MONEY_NEWTHEME") {
     bot.sendMessage(
       chatId,
-      "Вы перешли по специальной ссылке с параметром SOME_PARAM"
+      `
+<b>📝 Умови гри:</b>
+Вам необхідно вивчити самостійно нову тему (переглянути відео та прочитати текст) 
+після цього відповісти на тестові питання.
+
+За кожну правильну відповідь ви будете отримувати +50 💎
+
+Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("NEWTHEME") }
+    );
+  }
+
+  else if (param === "MONEY_OLDTHEME") {
+    bot.sendMessage(
+      chatId,
+      `
+<b>📝 Умови гри:</b>
+За кожну правильну відповідь ви будете отримувати +20 💎
+За неправильну -5 💎
+
+Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("OLDTHEME") }
+    );
+  }
+
+  else if (param === "MONEY_INDIV") {
+    bot.sendMessage(
+      chatId,
+      `
+<b>📝 Умови гри:</b>
+За кожну правильну відповідь ви будете отримувати +20 💎
+За неправильну -5 💎
+
+Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("INDIV") }
+    );
+  }
+  else if (param === "MONEY_WORK") {
+    bot.sendMessage(
+      chatId,
+      `
+<b>📝 Умови гри:</b>
+За кожну правильну відповідь ви будете отримувати +20 💎
+За неправильну -5 💎
+
+Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("WORK") }
+    );
+  }
+
+  else if (param === "MONEY_GROUP") {
+    bot.sendMessage(
+      chatId,
+      `
+<b>📝 Умови гри:</b>
+За кожну правильну відповідь ви будете отримувати +20 💎
+За неправильну -5 💎
+
+Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("GROUP") }
+    );
+  }
+
+  else if (param === "MONEY_TEST") {
+    bot.sendMessage(
+      chatId,
+      `
+<b>📝 Умови гри:</b>
+За кожну правильну відповідь ви будете отримувати +20 💎
+За неправильну -5 💎
+
+Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("TEST") }
+    );
+  }
+  else if (param === "MONEY_PRACTICE") {
+    bot.sendMessage(
+      chatId,
+      `
+  <b>📝 Умови гри:</b>
+  За кожну правильну відповідь ви будете отримувати +20 💎
+  За неправильну -5 💎
+
+  Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("PRACTICE") }
+    );
+  }
+  else if (param === "MONEY_VIDEO") {
+    bot.sendMessage(
+      chatId,
+      `
+  <b>📝 Умови гри:</b>
+  За кожну правильну відповідь ви будете отримувати +20 💎
+  За неправильну -5 💎
+
+  Якщо усі умови зрозумілі натискайте на кнопку <b>ПОЧАТИ ГРУ</b>`,
+      { parse_mode: "HTML", ...keyboards.keyboardStartGame("VIDEO") }
     );
   }
 });
@@ -1292,7 +1529,101 @@ bot.on("message", async (msg) => {
   const text = msg.text;
   const chatId = msg.chat.id;
   lastMsgId = msg.message_id;
+//   bot.sendMessage(
+//     chatId,
+//     `
+//     <a href="tg://user?id=123456789">inline mention of a user</a>
+// <tg-emoji emoji-id="5368324170671202286">👍</tg-emoji>
 
+//     Your code python:
+//     <pre><code class="language-python">
+// if 5 > 3:
+//   print(120)
+// def an(val1, val2):
+//     input('your code')
+//     </code></pre>`,
+//     { parse_mode: "HTML" }
+//   );
+
+  if (modeGPT) {
+    let dataPerson = {
+      age: 13,
+
+    }
+    let startData = `Привіт!
+    Мені ${dataPerson.age} років та я вивчаю веб програмування.
+    В мене є питання. По можливості дай приклад коду щоб мені було усе зрозуміло.
+    Спробуй зрозуміти мене з напівслова.
+    Не починай відповідь з питання. Просто дай відповідь. Дай відповідь і все!
+    Ось моє питання: 
+
+    `; 
+    bot.sendMessage(
+      chatId,
+      "<i>⏳ Зачекайте Chat GPT скоро дасть відповідь на ваше питання</i>",
+      { parse_mode: "HTML" }
+    );
+    modeGPT = false;
+
+
+    const API_KEY = "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";
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    };
+
+// Ви можете створити фон сайту за допомогою HTML та CSS. 
+// Для цього потрібно додати наступний код до вашого HTML-документу:
+
+// <body style="background-image: url('path-to-image.jpg');">
+
+// Де path-to-image.jpg це посилання на зображення, яке ви бажаєте використовувати як фон. 
+// Ви також можете додати інші стилі для зображення фону. 
+// Наприклад, ви можете змінити розташування фонового зображення за допомогою атрибута background-position:
+
+// <body style="background-image: url('path-to-image.jpg'); background-position: center;">
+
+
+    const prompt = startData + text;
+    const maxTokens = 150;
+
+    const data = {
+      prompt: prompt,
+      max_tokens: maxTokens,
+    };
+
+    let client = axios.create({
+      headers: {
+        Authorization: 'Bearer ' + API_KEY
+      }
+    })
+
+    let params = {
+      prompt: prompt,
+      model: "text-davinci-003",
+      max_tokens: 1000,
+      temperature: 0.8,
+    };
+
+    client
+      .post("https://api.openai.com/v1/completions", params)
+      .then((result) => {
+        let res = result.data.choices[0].text;
+        bot.sendMessage(chatId, res);
+      })
+      .catch((err) => {
+        bot.sendMessage(chatId, 'Сталась помилка. Спробуйте ще раз.', { parse_mode: "HTML" });
+      
+        console.log("error", err);
+      });
+
+    return true;
+  }
+  let checkUser = await User.find({ idGroup: chatId });
+  if (checkUser.length == 0) {
+    return bot.sendMessage(chatId, "Ви не зареєстровані на навчання ❌");
+  }
   if (waitCardNumber) {
     let currentUser = await User.findOne({ idGroup: chatId });
 
@@ -1410,8 +1741,6 @@ ${link.invite_link}
       }
     }
 
-
-
     // commands
     if (text === "/themes") {
       let titles = "";
@@ -1459,8 +1788,6 @@ ${link.invite_link}
 
       //   bot.answerCallbackQuery(callbackQueryId, { text, showAlert });
     }
-
-    
 
     // commands
     if (text === "/results") {
@@ -1657,6 +1984,12 @@ ${link.invite_link}
 bot.on("callback_query", async (msg) => {
   const data = msg.data;
   const chatId = msg.message.chat.id;
+  let checkUser = await User.find({ idGroup: chatId });
+  if (checkUser.length == 0) {
+    return bot.sendMessage(chatId, "Ви не зареєстровані на навчання ❌");
+  }
+  let currentUser = await User.findOne({ idGroup: chatId });
+
   try {
     const jsonObject = JSON.parse(data);
 
@@ -1824,13 +2157,82 @@ bot.on("callback_query", async (msg) => {
       keyboards.keyboardSymbols
     );
   }
-    if (data === "user-elements") {
-      bot.sendMessage(chatId, `elements`, {
+    if (data === "user-savedWork") {
+      bot.sendMessage(
+        chatId,
+        "Поки що в тебе немає збережених робіт 😔",
+      );
+    }
+  if (data === "user-elements") {
+    bot.sendMessage(
+      chatId,
+      `Ось елементи які допоможуть тобі зробити свою, власну веб програму 👇`,
+      {
         ...keyboards.elementsCategory,
         parse_mode: "HTML",
-      });
-    }
+      }
+    );
+  }
 
+  //  "startGame-NEWTHEME") {
+  //  "startGame-OLDTHEME") {
+  //  "startGame-INDIV") {
+  //  "startGame-WORK") {
+  //  "startGame-GROUP") {
+  //  "startGame-TEST") {
+  //  "startGame-PRACTICE") {
+  //  "startGame-VIDEO") {
+
+  if (data.startsWith("startGame")) {
+    let variant = data.split("-")[1];
+    console.log(variant);
+    bot.sendMessage(chatId, `Гра ${variant} починається!`);
+
+    switch (variant) {
+      case "NEWTHEME":
+        break;
+      case "OLDTHEME":
+        
+        break;
+      case "INDIV":
+        
+        break;
+      case "WORK":
+        
+        break;
+      case "GROUP":
+        
+        break;
+      case "TEST":
+         for (let test of themes[0].data[0].details.tests) {
+           let idTest = uuid().slice(0, 8);
+           await bot.sendPhoto(chatId, await testsImage(test.title), {
+             caption: "<b>" + test.title + "</b>",
+             ...keyboards.createTest(test.options, idTest),
+             parse_mode: "HTML",
+           });
+         }
+        
+        break;
+      case "PRACTICE":
+        
+        break;
+      case "VIDEO":
+        
+        break;
+      default:
+        break;
+    }
+  }
+
+  if (data.startsWith("soloTheme")) {
+    let body = data.split("-")[1];
+    let res = findPath(themes, body);
+    const value = accessNestedObject(themes, res.slice(0, res.length - 1));
+    console.log("Значение по указанному пути:", value);
+    console.log(res);
+     createLearnTheme(value, chatId);
+  }
   if (data == "user-changeSchedule") {
     let users = await User.find({});
     // console.log(users)
@@ -2052,6 +2454,13 @@ ${progressEngWord}
   // bot.answerCallbackQuery(msg.id, "Хорошо");
   if (data.startsWith("elements-")) {
     let element = data.slice(9);
+    if (!elementsData[element]) {
+      return bot.sendMessage(
+        chatId,
+        `В категорії <b>${element}</b> поки що немає елементів`,
+        {parse_mode: 'HTML'}
+      );
+    }
     let el = elementsData[element].variants[0];
     let templateElementsText = `
 <b>${el.title}</b>
@@ -2060,7 +2469,8 @@ ${progressEngWord}
 
 <pre>${escapeHTML(el.code["index.html"])}</pre>
     `;
-    bot.sendPhoto(chatId, el.result, {
+    await bot.sendMessage(chatId, elementsData[element].description, {parse_mode: 'HTML'});
+    await bot.sendPhoto(chatId, el.result, {
       parse_mode: "HTML",
       ...keyboards.code(el.id, element, elementsData[element].variants.length),
       caption: templateElementsText,
@@ -2334,32 +2744,27 @@ ${progressEngWord}
     if (variant == "video") {
       let amountVideo = dataTheme.video.length;
       if (amountVideo == 0) {
-         await bot.sendMessage(
-           chatId,
-           "😔 На жаль, відео по цій темі ще немає"
-         );
-      } 
-      else {
-
+        await bot.sendMessage(chatId, "😔 На жаль, відео по цій темі ще немає");
+      } else {
         let oldMessage = await bot.sendMessage(
           chatId,
           "⏳ Зачекайте, відео по даній темі завантажується..."
-          );
-          await bot.sendVideo(chatId, dataTheme.video[0].url)
-          await bot.deleteMessage(chatId, oldMessage.message_id);
-        }
+        );
+        await bot.sendVideo(chatId, dataTheme.video[0].url);
+        await bot.deleteMessage(chatId, oldMessage.message_id);
+      }
     }
     if (variant == "tests") {
       bot.sendMessage(chatId, "Ось тести по даній темі:");
 
-for (let test of dataTheme.tests) {
-  let idTest = uuid().slice(0, 8);
-  await bot.sendPhoto(chatId, await testsImage(test.title), {
-    caption: "<b>" + test.title + "</b>",
-    ...keyboards.createTest(test.options, idTest),
-    parse_mode: "HTML",
-  });
-}
+      for (let test of dataTheme.tests) {
+        let idTest = uuid().slice(0, 8);
+        await bot.sendPhoto(chatId, await testsImage(test.title), {
+          caption: "<b>" + test.title + "</b>",
+          ...keyboards.createTest(test.options, idTest),
+          parse_mode: "HTML",
+        });
+      }
     }
     if (variant == "practice") {
       let oldMessage = await bot.sendMessage(
@@ -2367,18 +2772,16 @@ for (let test of dataTheme.tests) {
         "⏳ Зачекайте, практичне завдання по даній темі завантажується..."
       );
 
+      console.log("currentThemesNew", dataTheme.tasks.practice);
 
+      idPracticeTask = dataTheme.tasks.practice;
 
-   console.log("currentThemesNew", dataTheme.tasks.practice);
-
-   idPracticeTask = dataTheme.tasks.practice;
-
-   for (let i = 0; i < idPracticeTask.length; i++) {
-     let practiceTasks = await Practice.findOne({ id: idPracticeTask[i] });
-     try {
-       let templateObjectData = {
-         output: "./img/practice-old.png",
-         html: `<html>
+      for (let i = 0; i < idPracticeTask.length; i++) {
+        let practiceTasks = await Practice.findOne({ id: idPracticeTask[i] });
+        try {
+          let templateObjectData = {
+            output: "./img/practice-old.png",
+            html: `<html>
   <body>
    ${practiceTasks.data.html}
    
@@ -2390,17 +2793,17 @@ for (let test of dataTheme.tests) {
   </html>
   
   `,
-       };
+          };
 
-       await nodeHtmlToImage(templateObjectData);
+          await nodeHtmlToImage(templateObjectData);
 
-       let resultCSS = "";
+          let resultCSS = "";
 
-       console.log("practiceTasks.data.html", practiceTasks);
+          console.log("practiceTasks.data.html", practiceTasks);
 
-       await nodeHtmlToImage({
-         output: "./img/practice-result.png",
-         html: `<html>
+          await nodeHtmlToImage({
+            output: "./img/practice-result.png",
+            html: `<html>
   <body>
    ${practiceTasks.data.html}
    ${practiceTasks.codeResult.html}
@@ -2424,11 +2827,11 @@ for (let test of dataTheme.tests) {
   </html>
   
   `,
-       }).then(() => console.log("The image was created successfully!"));
+          }).then(() => console.log("The image was created successfully!"));
 
-       await nodeHtmlToImage({
-         output: "./img/practice-result-tobase64.png",
-         html: `<html>
+          await nodeHtmlToImage({
+            output: "./img/practice-result-tobase64.png",
+            html: `<html>
   <body>
   ${practiceTasks.data.html}
    ${practiceTasks.codeResult.html}
@@ -2463,29 +2866,29 @@ for (let test of dataTheme.tests) {
   </html>
   
   `,
-       }).then(() => console.log("The image was created successfully!"));
+          }).then(() => console.log("The image was created successfully!"));
 
-       practiceList.push({
-         idPractice: idPracticeTask[i],
-         photo:
-           "data:image/jpeg;base64," +
-           (await imageToBase64("./img/practice-result-tobase64.png")),
-         students: [],
-       });
+          practiceList.push({
+            idPractice: idPracticeTask[i],
+            photo:
+              "data:image/jpeg;base64," +
+              (await imageToBase64("./img/practice-result-tobase64.png")),
+            students: [],
+          });
 
-       let title = practiceTasks.name;
-       let themes = practiceTasks.themes;
-       let descriptionText = practiceTasks.description;
-       let tasks = practiceTasks.tasks.title;
-       let id = practiceTasks.id;
-       await drawPracticeTask(title, descriptionText, themes, tasks);
-       let tasksItems = "";
-       practiceTasks.tasks.forEach((task) => {
-         tasksItems += `▪️ ${task.title} ${task.label}
+          let title = practiceTasks.name;
+          let themes = practiceTasks.themes;
+          let descriptionText = practiceTasks.description;
+          let tasks = practiceTasks.tasks.title;
+          let id = practiceTasks.id;
+          await drawPracticeTask(title, descriptionText, themes, tasks);
+          let tasksItems = "";
+          practiceTasks.tasks.forEach((task) => {
+            tasksItems += `▪️ ${task.title} ${task.label}
 `;
-       });
+          });
 
-       let templateCaption = `
+          let templateCaption = `
 <b>${title}</b>
 Опис:
 <i>${descriptionText}</i>
@@ -2497,74 +2900,66 @@ ${tasksItems}
 <pre>${id}</pre>
 
     `.slice(0, 1023);
-       await drawPracticeTask(title, descriptionText, themes, tasks);
+          await drawPracticeTask(title, descriptionText, themes, tasks);
 
-       let u = await User.findOne({idGroup: chatId})
-       console.log("car!!", u.car.currentCar);
+          let u = await User.findOne({ idGroup: chatId });
+          console.log("car!!", u.car.currentCar);
 
+          practiceList[i].students.push({
+            idStudent: Number(chatId),
+            car: u.car.currentCar,
+            result: {
+              successTask: [],
+              wrongTask: [],
+            },
+            historyCode: [
+              {
+                html: "",
+                css: "",
+                js: "",
+              },
+            ],
+            finish: false,
+            grade: 6,
+            time: 0,
+            finishCode: {
+              html: "",
+              css: "",
+              js: "",
+            },
+          });
 
-         practiceList[i].students.push({
-           idStudent: Number(chatId),
-           car: u.car.currentCar,
-           result: {
-             successTask: [],
-             wrongTask: [],
-           },
-           historyCode: [
-             {
-               html: "",
-               css: "",
-               js: "",
-             },
-           ],
-           finish: false,
-           grade: 6,
-           time: 0,
-           finishCode: {
-             html: "",
-             css: "",
-             js: "",
-           },
-         });
+          bot.sendPhoto(chatId, "./img/practice-result-canvas.png", {
+            caption: templateCaption,
+            ...keyboards.practiceKeyboard(chatId, idPracticeTask[i]),
+            parse_mode: "HTML",
+          });
+        } catch (e) {}
+      }
 
-         bot.sendPhoto(chatId, "./img/practice-result-canvas.png", {
-           caption: templateCaption,
-           ...keyboards.practiceKeyboard(chatId, idPracticeTask[i]),
-           parse_mode: "HTML",
-         });
-     } catch (e) {}
-   }
+      await studentListPractice.insertMany(practiceList);
+      practiceList = [];
 
-   await studentListPractice.insertMany(practiceList);
-   practiceList = [];
-
-
-
-
-
-
-
-       await bot.sendMessage(
-         chatId,
-         "⏳ Зачекайте, практичне завдання по даній темі завантажується..."
-       );
+      await bot.sendMessage(
+        chatId,
+        "⏳ Зачекайте, практичне завдання по даній темі завантажується..."
+      );
 
       await bot.deleteMessage(chatId, oldMessage.message_id);
-
     }
-      if (variant == "similarTags") {
-        let tags = ``;
-        for (let tag of dataTheme.similarTags) {
-tags += `\n🌟 ${tag}`;
-        }
-        bot.sendMessage(
-          chatId,
-          "<b>Ось схожі теми які корисно тобі вивчити:</b> " + tags,
-          {parse_mode: 'HTML'}
-        );
+    if (variant == "similarTags") {
+      let tags = ``;
+      for (let tag of dataTheme.similarTags) {
+        tags += `\n🌟 ${tag}`;
       }
+      bot.sendMessage(
+        chatId,
+        "<b>Ось схожі теми які корисно тобі вивчити:</b> " + tags,
+        { parse_mode: "HTML" }
+      );
+    }
   }
-  
+
   if (data == "regStudent") {
     newUserStatus = "name";
     bot.sendMessage(chatId, "Вкажіть ім'я учня");
@@ -2649,8 +3044,11 @@ tags += `\n🌟 ${tag}`;
 
     bot.sendMessage(
       chatId,
-      "Тема: <b>" + themes[themeIndex].title + "</b> обрана!",
-      keyboards.themesKeyboard2(currentThemes, formSoloImg.themes)
+      "Тема заняття: <b>" + themes[themeIndex].title + "</b> обрана!",
+      {
+        ...keyboards.themesKeyboardSolo(currentThemes, formSoloImg.themes),
+        parse_mode: "HTML",
+      }
     );
   }
   if (data.startsWith("newTheme-")) {
@@ -2662,7 +3060,7 @@ tags += `\n🌟 ${tag}`;
     bot.sendMessage(
       chatId,
       "Тема: <b>" + themes[themeIndex].title + "</b> обрана!",
-      keyboards.themesKeyboard2(currentThemes, formSoloImg.themes)
+      {...keyboards.themesKeyboard2(currentThemes, formSoloImg.themes,), parse_mode: 'HTML'}
     );
   }
   if (data == "balanceStudent") {
@@ -2725,85 +3123,17 @@ tags += `\n🌟 ${tag}`;
   }
   if (data.startsWith("themesIndex")) {
     try {
+      let dat = data.split('-')[1]
+      if (data.startsWith("themesIndexsolo")) {
+        console.log(dat)
+        let activeObjectTheme = currentThemes[dat];
+        console.log(currentThemes[dat]);
+
+          formSoloImg.themes.push(activeObjectTheme);
+      }
       if (typeThemes == "learn") {
         let currentTheme = currentThemes[+data.slice(12)].details;
-        console.log("learn");
-
-        console.log("currentThemesNew", currentTheme);
-
-        function generateHTMLLinks() {
-          let links = ``;
-          currentTheme.links.forEach((link) => {
-            links += `<a href="${link.url}">📑 ${link.title}</a>\n`;
-          });
-          return links;
-        }
-        let idTheme = shortId.set(currentTheme);
-
-        let kb = await keyboards.theme(currentTheme, idTheme);
-
-        await bot.sendPhoto(chatId, currentTheme.default.images[0].url, {
-          caption: `
-*Вивчаємо тему: ${currentTheme.title.trim()}*
-*Скорочено: ${currentTheme.speedCode.trim()}*
-${currentTheme.description}
-  `,
-          parse_mode: "Markdown",
-        });
-
-        let allCode = "";
-        for (let item of currentTheme.default.code) {
-          allCode += `
-🧑‍💻 ${item.title}
-\`${item.body}\``;
-        }
-
-        let allSandbox = "";
-        for (let item of currentTheme.default.sandbox) {
-          allSandbox += `
-🔸 [${item.title}](${item.url.trim()})`;
-        }
-        let allFigma = "";
-        for (let item of currentTheme.default.figma) {
-          allFigma += `
-🔸 [${item.title}](${item.url.trim()})`;
-        }
-        let allLinks = "";
-        for (let item of currentTheme.links) {
-          allLinks += `
-🔹 [${item.title}](${item.url.trim()})`;
-        }
-
-        await bot.sendMessage(
-          chatId,
-          `
-*Приклади коду:*
-${allCode}
- 
-*Приклади в пісочниці:*
-${allSandbox}
-
-*Приклади в Figma:*
-${allFigma}
-
-*Посилання по темі:*
-${allLinks}
- 
-  `,
-          { parse_mode: "Markdown", disable_web_page_preview: true, ...kb }
-        );
-
-        //       bot.sendMessage(
-        //         chatId,
-        //         `
-        // **${currentTheme.title.trim()}**
-
-        // ${currentTheme.description}
-
-        // <b>${generateHTMLLinks()}</b>
-        // `,
-        //         { parse_mode: "Markdown", ...kb }
-        //       );
+        createLearnTheme(currentTheme, chatId)
       }
 
       if (typeThemes == "tests") {
@@ -2865,9 +3195,6 @@ id: ${idTest}
               parse_mode: "HTML",
             });
           });
-
-
-
         }
       }
 
@@ -3035,7 +3362,7 @@ ${tasksItems}
             await drawPracticeTask(title, descriptionText, themes, tasks);
 
             newGroupStudent.forEach(async (id) => {
-               let u = await User.findOne({ idGroup: chatId });
+              let u = await User.findOne({ idGroup: chatId });
 
               practiceList[i].students.push({
                 idStudent: Number(id),
@@ -3074,7 +3401,8 @@ ${tasksItems}
         practiceList = [];
 
         // console.log(practiceList);
-      } else if (typeThemes == "tests") {
+      } 
+      else if (typeThemes == "tests") {
         let currentThemesOld = currentThemes[+data.slice(12)];
         currentThemes = currentThemes[+data.slice(12)].childrens;
         if (currentThemes.length == 0) {
@@ -3125,45 +3453,165 @@ ${readyThemes}
   }
 
   if (data == "car-shop") {
+    let myCars = currentUser.car.myCars;
+
     indexCar = 0;
-    showCarShop(indexCar, chatId);
+    showCarShop(indexCar, chatId, myCars);
   }
 
+  if (data.startsWith("carshop")) {
+    let action = data.split("-")[1];
+    let idCar = data.split("-")[2];
+    let myCars = currentUser.car.myCars;
 
-   if (data.startsWith("carshop")) {
-    let action = data.split('-')[1]
-    let idCar = data.split('-')[2]
-
-    if (action == 'left') {
-      indexCar--
-      showCarShop(indexCar, chatId);
-
-    } else if (action == 'right') {
-      indexCar++;
-      showCarShop(indexCar, chatId);
-
-
-    } else if (action == 'price') {
+    if (action == "left") {
+      if (indexCar > 0) {
+        indexCar--;
+        showCarShop(indexCar, chatId, myCars);
+      } else {
+        bot.answerCallbackQuery(msg.id, {
+          text: "Автомобілів більше немає(",
+          show_alert: false,
+        });
+      }
+    } else if (action == "right") {
+      if (indexCar < cars.length - 1) {
+        indexCar++;
+        showCarShop(indexCar, chatId, myCars);
+      } else {
+        bot.answerCallbackQuery(msg.id, {
+          text: "Автомобілів більше немає(",
+          show_alert: false,
+        });
+      }
+    } else if (action == "price") {
       bot.answerCallbackQuery(msg.id, {
         text: "Ціна автомобіля - " + cars[idCar].price + " 💎",
         show_alert: false,
       });
-
-    } else if (action == 'buy') {
-
-      bot.sendMessage(
-        chatId,
-        `<b>🥳 Вітаю!</b> Ти купив автомобіль ${cars[idCar].title} за ${cars[idCar].price} 💎!`,
-        {parse_mode: 'HTML'}
-      );
+    } else if (action == "buy") {
+      let currentCars = currentUser.car.myCars;
+      currentCars.push(cars[idCar].img);
+      let price = cars[idCar].price;
+      console.log(1212);
+      console.log(price);
+      console.log(currentCars);
+      console.log(currentUser.diamonds);
+      if (currentUser.diamonds >= price) {
+        await User.updateOne(
+          { idGroup: chatId },
+          { $set: { diamonds: currentUser.diamonds - price } }
+        );
+        await User.updateOne(
+          { idGroup: chatId },
+          { $set: { "car.myCars": currentCars } }
+        );
+        bot.sendMessage(
+          chatId,
+          `
+<b>🥳 Вітаю!</b> Ти купив автомобіль ${cars[idCar].title} за ${
+            cars[idCar].price
+          } 💎!
+<b>Твій баланс зараз:</b> ${currentUser.diamonds - price}
+        `,
+          { parse_mode: "HTML", ...keyboards.carKb() }
+        );
+      } else {
+        console.log(678);
+        bot.answerCallbackQuery(msg.id, {
+          text: "Не вистачає алмазів ❌",
+          show_alert: true,
+        });
+      }
     }
-   }
-   if (data == "car-garage") {
-   }
+  }
+
+  if (data.startsWith("car-garage-e-")) {
+    let car_ = data.slice(13);
+    let allCars = currentUser.car.myCars;
+    // Обновляем currentCar на значение автомобиля, соответствующего нажатой кнопке
+    const newCurrentCar = car_; // определите значение из callback_data или каким-либо другим способом
+
+    // Получаем обновленную клавиатуру
+    const updatedKeyboard = keyboards.garageActionsKb(allCars, newCurrentCar);
+
+    await User.updateOne(
+      { idGroup: chatId },
+      { $set: { "car.currentCar": car_ } }
+    );
+
+    // Обновляем сообщение с новой клавиатурой
+    bot.editMessageText(`Автомобіль <b>${car_}</b> обраний!`, {
+      chat_id: chatId,
+      message_id: msg.message.message_id,
+      ...updatedKeyboard,
+      parse_mode: "HTML",
+    });
+  }
+
+  if (data == "car-garage") {
+    let allCars = currentUser.car.myCars;
+    let currentCar = currentUser.car.currentCar;
+
+    bot.sendMessage(
+      chatId,
+      `
+<b>Всього автомобілів в гаражі:</b> ${allCars.length} (з ${cars.length})
+<b>Усі ваші автомобілі:</b> ${allCars}
+
+<b>Ти можеш обрати активний автомобіль 👇</b>
+`,
+      { parse_mode: "HTML", ...keyboards.garageActionsKb(allCars, currentCar) }
+    );
+  }
   if (data.startsWith("user-")) {
     let text = data.slice(5);
 
     if (text == "getCoins") {
+      let currentUser = await User.findOne({ idGroup: chatId });
+      console.log(currentUser);
+      bot.sendMessage(
+        chatId,
+        `
+<b>Привіт! Зараз в тебе на балансі:</b>
+💎 ${currentUser.diamonds} алмазів
+💵 ${currentUser.quiz.currentMoney} грн 
+
+
+<b>Ти можеш заробити 💎 вже зараз! 
+Просто натисни який варіант заробітку тобі подобається:</b>
+
+<b>Вивчити нову тему</b> 
+🤑 250 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_NEWTHEME"> ПОЧАТИ → </a>
+
+<b>Повторити стару тему</b>
+🤑 180 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_OLDTHEME"> ПОЧАТИ → </a>
+
+<b>Індивідуальне заняття </b>
+🤑 350 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_INDIV"> ПОЧАТИ → </a>
+
+<b>Показати будь-яку роботу</b>
+🤑 500 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_WORK"> ПОЧАТИ → </a>
+
+<b>Групові заняття</b>
+🤑 150 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_GROUP"> ПОЧАТИ → </a>
+
+<b>Тестові завдання</b>
+🤑 20 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_TEST"> ПОЧАТИ → </a>
+
+<b>Практичні завдання</b>
+🤑 150 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_PRACTICE"> ПОЧАТИ → </a>
+
+<b>Перегляд відео по понеділкам</b>
+🤑 250 💎 <a href="https://t.me/DimaNice_Bot?start=MONEY_VIDEO"> ПОЧАТИ → </a>
+
+
+Успіхів!
+    `,
+        {
+          parse_mode: "HTML",
+        }
+      );
     }
     if (text == "changeCar") {
       let currentUser = await User.findOne({ idGroup: chatId });
@@ -3174,18 +3622,17 @@ ${readyThemes}
       const svgData = fs.readFileSync(urlPhoto);
 
       // Конвертировать SVG в PNG
-      sharp(svgData).resize(600).png()
-        .toFile("output-svg.png",).then(data=>{
+      sharp(svgData)
+        .resize(600)
+        .png()
+        .toFile("output-svg.png")
+        .then((data) => {
           // Отправить PNG изображение
           bot.sendPhoto(chatId, "./output-svg.png", {
             caption: `Твій автомобіль зараз виглядає так ☝️`,
-            ...keyboards.carKb()
+            ...keyboards.carKb(),
           });
-        })
-
-   
-
-  
+        });
     }
     if (text == "balance") {
       let currentUser = await User.findOne({ idGroup: chatId });
@@ -3215,6 +3662,7 @@ ${readyThemes}
     `,
           {
             parse_mode: "HTML",
+            ...keyboards.keyboardGetMoney,
           }
         );
       } else {
@@ -3294,6 +3742,7 @@ ${readyThemes}
     if (text == "getCoins") {
     }
     if (text == "gpt") {
+      modeGPT = true;
       let gptTips = `<b>Ось декілька порад як краще написати запит Штучному Інтелекту:</b>
 
 
@@ -3320,6 +3769,7 @@ ${readyThemes}
 
 
 <b>Напиши своє питання Chat GPT 👇</b>
+<i>⚠️ На сьогодні залишилось спроб 8/10:</i>
 `;
       bot.sendMessage(chatId, gptTips, { parse_mode: "HTML" });
     }
@@ -3333,6 +3783,7 @@ ${readyThemes}
         chatId,
         `
 <b>Вітаю вас в розділі Статистика.</b>
+
 Оберіть період за який вас цікавить отримати статистику про ваші досягнення 👇
        `,
         { parse_mode: "HTML", ...keyboards.statPeriod(chatId) }
@@ -3364,18 +3815,47 @@ ${curMoney} грн
       }
     }
     if (text == "pay") {
+      bot.sendMessage(
+        chatId,
+        `
+<b>Ваш план:</b> грн на місяць 
+<b>Ви вже оплатили період:</b> з по .
+<b>Дата оплати за наступний місяць:</b> 
+(очікуємо оплату вже 3 дні).
+
+<b>Також ви можете перейти на тариф:</b> 
+👥 Навчання у групі
+☄️ Старт (1 індивідуальне)
+💻 Прогер (2 індивідуальних)
+😎 Профі (3 індивідуальних)
+
+<b>Дізнатись детальніше про варіанти навчання 👇</b> 
+`,
+        { parse_mode: "HTML", ...keyboards.detailsVariantsTraining() }
+      );
     }
     if (text == "program") {
+      bot.sendMessage(
+        chatId,
+        `
+<b>Ось програма курсу 👇</b>
+
+`,
+        { ...keyboards.keyboardStudentsSettings, parse_mode: "HTML" }
+      );
     }
     if (text == "settings") {
       bot.sendMessage(
         chatId,
         `
-Ви в меню налаштувань.
+<b>⚙️ Ви в меню налаштувань.</b>
 
-Оберіть що саме бажаєте змінити👇
+Оберіть що саме бажаєте змінити 👇
 `,
-        keyboards.keyboardStudentsSettings
+        {
+          ...keyboards.keyboardStudentsSettings,
+          parse_mode: "HTML",
+        }
       );
     }
   }
@@ -3625,13 +4105,14 @@ ${curMoney} грн
     let ready = "";
 
     for (let i = 0; i < formSoloImg.themes.length; i++) {
-      if (formSoloImg.themes[i].startsWith("++")) {
-        ready += `\n<b><u>${formSoloImg.themes[i]
-          .toUpperCase()
-          .slice(2)}:</u></b>\n`;
-      } else {
-        ready += `🚀 ${formSoloImg.themes[i]}\n`;
-      }
+      try {
+        ready += `\n<b><u>▪️ ${formSoloImg.themes[
+          i
+        ].details.title.toUpperCase()}</u></b>`;
+        } catch (e) {
+          
+        }
+
     }
 
     let template = `
@@ -3680,11 +4161,14 @@ ID заняття:
 
     let resThemesBtns = [];
     formSoloImg.themes.forEach((theme) => {
-      if (!theme.startsWith("++")) {
+try {
         resThemesBtns.push([
-          { text: theme, callback_data: "learn-new-" + theme },
+          {
+            text: theme.details.title,
+            callback_data: "soloTheme-" + theme.details.title,
+          },
         ]);
-      }
+      } catch (e) {}
     });
     let currentThemesKeyboard = {
       reply_markup: {

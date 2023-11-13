@@ -11,6 +11,21 @@ let namesRight = [];
 let namesError = [];
 
 class Keyboards {
+  keyboardStartGame(variant) {
+    let currentKeyboard = {
+      reply_markup: JSON.stringify({
+        inline_keyboard: [
+          [
+            {
+              text: `🕹 ПОЧАТИ ГРУ`,
+              callback_data: `startGame-${variant}`,
+            },
+          ],
+        ],
+      }),
+    };
+    return currentKeyboard;
+  }
   theme = async (currentTheme, idTheme) => {
     let amountTests = currentTheme.tests.length;
     let amountSimilarTags = currentTheme.similarTags.length;
@@ -439,6 +454,39 @@ ${namesError}
     };
   };
 
+  detailsVariantsTraining = () => {
+    return {
+      reply_markup: JSON.stringify({
+        inline_keyboard: [
+          [
+            {
+              text: "👥 Навчання у групі",
+              callback_data: "variantsTraining-group",
+            },
+          ],
+          [
+            {
+              text: "☄️ Старт (1 індивідуальне)",
+              callback_data: "variantsTraining-group",
+            },
+          ],
+          [
+            {
+              text: "💻 Прогер (2 індивідуальних)",
+              callback_data: "variantsTraining-group",
+            },
+          ],
+          [
+            {
+              text: "😎 Профі (3 індивідуальних)",
+              callback_data: "variantsTraining-group",
+            },
+          ],
+        ],
+      }),
+    };
+  };
+
   confirmThemes = {
     reply_markup: {
       keyboard: [[{ text: "Підтвердити теми" }]],
@@ -519,11 +567,11 @@ ${namesError}
     let btns = [];
     btns.push([
       {
-        text: "back",
+        text: "⬅️ Повернутись",
         callback_data: `themesBack`,
       },
       {
-        text: "delete themes",
+        text: "❌ Видалити тему",
         callback_data: `themesDelete`,
       },
     ]);
@@ -536,6 +584,37 @@ ${namesError}
         {
           text: currentThemes[i].details.title + sym,
           callback_data: `themesIndex-${i}`,
+        },
+      ]);
+    }
+    return {
+      reply_markup: JSON.stringify({
+        inline_keyboard: btns,
+      }),
+    };
+  };
+
+  themesKeyboardSolo = (currentThemes, themes) => {
+    let btns = [];
+    btns.push([
+      {
+        text: "⬅️ Повернутись",
+        callback_data: `themesBack`,
+      },
+      {
+        text: "❌ Видалити тему",
+        callback_data: `themesDelete`,
+      },
+    ]);
+    for (let i = 0; i < currentThemes.length; i++) {
+      let sym = "";
+      if (themes.includes(currentThemes[i].details.title)) {
+        sym = "✅";
+      }
+      btns.push([
+        {
+          text: currentThemes[i].details.title + sym,
+          callback_data: `themesIndexsolo-${i}`,
         },
       ]);
     }
@@ -678,7 +757,15 @@ ${namesError}
     };
   };
 
-  carShop = (money, id) => {
+  carShop = (money, id, status) => {
+    let defaultBtn = [
+      { text: `🛍 Купити авто`, callback_data: `carshop-buy-${id}` },
+    ];
+    if (status == "buyed") {
+      defaultBtn = [
+        { text: `🚘 ВЖЕ В ГАРАЖІ 🚘`, callback_data: `car-garage` },
+      ];
+    }
     return {
       reply_markup: JSON.stringify({
         inline_keyboard: [
@@ -687,7 +774,7 @@ ${namesError}
             { text: `💎 ${money} 💎`, callback_data: `carshop-price-${id}` },
             { text: `▶️`, callback_data: `carshop-right-${id}` },
           ],
-          [{ text: `🛍 Купити авто`, callback_data: `carshop-buy-${id}` }],
+          defaultBtn,
         ],
       }),
     };
@@ -700,6 +787,26 @@ ${namesError}
           [{ text: `🛍 В магазин`, callback_data: "car-shop" }],
           [{ text: `🚛 Мій гараж`, callback_data: "car-garage" }],
         ],
+      }),
+    };
+  };
+
+  garageActionsKb = (allCars, currentCar) => {
+    let kbs = [];
+    for (let car of allCars) {
+      if (car == currentCar) {
+        kbs.push([
+          { text: `🚘 ${car} ✅`, callback_data: "car-garage-s-" + car },
+        ]);
+      } else {
+        kbs.push([
+          { text: `🚘 ${car} ⬜️`, callback_data: "car-garage-e-" + car },
+        ]);
+      }
+    }
+    return {
+      reply_markup: JSON.stringify({
+        inline_keyboard: kbs,
       }),
     };
   };
@@ -783,6 +890,14 @@ ${namesError}
     }),
   };
 
+  keyboardGetMoney = {
+    reply_markup: JSON.stringify({
+      inline_keyboard: [
+        [{ text: "💎 Заробити монети", callback_data: "user-getCoins" }],
+      ],
+    }),
+  };
+
   keyboardStudents = {
     reply_markup: JSON.stringify({
       inline_keyboard: [
@@ -792,15 +907,13 @@ ${namesError}
           { text: "🏦 Мій баланс", callback_data: "user-balance" },
         ],
         [
-          { text: "👑 Мої успіхи", callback_data: "user-successes" },
-          { text: "🥇 Мої оцінки", callback_data: "user-myGrade" },
+          {
+            text: "👑 Успіхи | 📈 Статистика | 🥇 Оцінки",
+            callback_data: "user-statistics",
+          },
         ],
         [
           { text: "⌨️ Клавіатура", callback_data: "user-keyboard" },
-          { text: "🥇 Мої оцінки", callback_data: "user-myGrade" },
-        ],
-        [
-          { text: "📈 Статистика", callback_data: "user-statistics" },
           { text: "⚙️ Налаштування", callback_data: "user-settings" },
         ],
         [{ text: "🎓 Вивчити нову тему", callback_data: "user-newTheme" }],
@@ -809,12 +922,9 @@ ${namesError}
         [{ text: "📝 Отримати завдання", callback_data: "user-getTasks" }],
         [{ text: "🗂 Збережені роботи", callback_data: "user-savedWork" }],
         [{ text: "🔍 Спілкування з Chat GPT", callback_data: "user-gpt" }],
-        [{ text: "📅 Переглянути розклад", callback_data: "user-schedule" }],
         [
-          {
-            text: "✏️ Змінити розклад занять",
-            callback_data: "user-changeSchedule",
-          },
+          { text: "📅 Мій розклад", callback_data: "user-schedule" },
+          { text: "✏️ Змінити розклад", callback_data: "user-changeSchedule" },
         ],
 
         [
@@ -823,7 +933,7 @@ ${namesError}
             callback_data: "user-competitions",
           },
         ],
-        [{ text: "💳 Оплата за навчання", callback_data: "user-pay" }],
+        [{ text: "💳 Оплата та Тарифи", callback_data: "user-pay" }],
         [{ text: "📕 Отримати план навчання", callback_data: "user-program" }],
       ],
     }),
@@ -1070,6 +1180,16 @@ ${namesError}
           {
             text: "🍔 Гамбургер меню",
             callback_data: "elements-hamburger-menu",
+          },
+        ],
+        [
+          {
+            text: "⬇️ Підвал",
+            callback_data: "elements-social-buttons",
+          },
+          {
+            text: "💂‍♂️ Шапка",
+            callback_data: "elements-like-buttons",
           },
         ],
         [
